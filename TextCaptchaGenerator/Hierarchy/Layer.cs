@@ -16,8 +16,11 @@ namespace TextCaptchaGenerator.Hierarchy
 
         public SKBlendMode BlendMode { get; }
         public List<BaseDrawable> Drawables { get; }
-        public List<IDrawable> Effects { get; }
+        public List<IEffect> Effects { get; }
         public SKCanvas Canvas { get; }
+
+        // TO DO
+        // add opacity
 
 
         public Layer(SKImageInfo imageInfo) : this(imageInfo, SKBlendMode.SrcOver, SKColors.Transparent) { }
@@ -31,7 +34,7 @@ namespace TextCaptchaGenerator.Hierarchy
             Canvas = new SKCanvas(bitmap);
             Canvas.Clear(background);
             Drawables = new List<BaseDrawable>();
-            Effects = new List<IDrawable>();
+            Effects = new List<IEffect>();
             BlendMode = blendMode;
         }
 
@@ -50,11 +53,11 @@ namespace TextCaptchaGenerator.Hierarchy
                 {
                     var tempBitMap = new SKBitmap(imageInfo);
                     var tempCanvas = new SKCanvas(bitmap);
-
+                    
                     drawable.Draw(tempCanvas);
 
                     foreach(var effect in drawable.Effects)
-                        effect.Draw(tempCanvas);
+                        effect.Draw(tempCanvas, tempBitMap);
 
                     using (SKPaint paint = new SKPaint())
                     {
@@ -63,6 +66,16 @@ namespace TextCaptchaGenerator.Hierarchy
                     }
                 }
             }
+
+            
+            foreach (var effect in Effects)
+                effect.Draw(Canvas, bitmap);
+
+            //using (SKPaint paint = new SKPaint())
+            //{
+            //    paint.BlendMode = BlendMode;
+            //    Canvas.DrawBitmap(tempBitMap1, new SKPoint(0, 0), paint);
+            //}
 
             return bitmap;
         }

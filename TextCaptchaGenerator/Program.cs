@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects;
+using TextCaptchaGenerator.Effects.Distorsions;
 using TextCaptchaGenerator.Hierarchy;
 
 namespace TextCaptchaGenerator
@@ -13,7 +14,7 @@ namespace TextCaptchaGenerator
 
 		private static string CreateDataPath()
         {
-			string path = Path.GetFullPath("..\\..\\..\\.\\data");
+			string path = Path.GetFullPath("..\\..\\..\\data");
 
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
@@ -49,12 +50,17 @@ namespace TextCaptchaGenerator
 
 			// layer2
 			Layer layer2 = new Layer(image.info, SKColors.Transparent);
+			// objects
 			DRectangle dRect = new DRectangle(new SKRect(200, 200, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
 			DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
 
 			layer2.Drawables.Add(dRect);
 			layer2.Drawables.Add(dLine);
 			image.Layers.Add(layer2);
+
+			// effects
+			Swirl swirl = new Swirl(15);
+			layer2.Effects.Add(swirl);
 
 
 			// image to png
