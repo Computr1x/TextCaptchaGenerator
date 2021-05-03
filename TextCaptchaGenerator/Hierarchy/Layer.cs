@@ -55,9 +55,9 @@ namespace TextCaptchaGenerator.Hierarchy
                     var tempCanvas = new SKCanvas(bitmap);
                     
                     drawable.Draw(tempCanvas);
-
+                    
                     foreach(var effect in drawable.Effects)
-                        effect.Draw(tempCanvas, tempBitMap);
+                        effect.Draw(tempBitMap);
 
                     using (SKPaint paint = new SKPaint())
                     {
@@ -69,7 +69,7 @@ namespace TextCaptchaGenerator.Hierarchy
 
             
             foreach (var effect in Effects)
-                effect.Draw(Canvas, bitmap);
+                effect.Draw(bitmap);
 
             //using (SKPaint paint = new SKPaint())
             //{

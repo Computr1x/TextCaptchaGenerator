@@ -59,7 +59,7 @@ namespace TextCaptchaGenerator
 			image.Layers.Add(layer2);
 
 			// effects
-			Swirl swirl = new Swirl(15);
+			Swirl swirl = new Swirl(15, 250, 2);
 			layer2.Effects.Add(swirl);
 
 

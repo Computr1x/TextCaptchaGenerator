@@ -4,6 +4,6 @@ namespace TextCaptchaGenerator.BaseObjects
 {
     public interface IEffect
     {
-        public void Draw(SKCanvas canvas, SKBitmap bitmap);
+        public void Draw(SKBitmap bitmap);
     }
 }
