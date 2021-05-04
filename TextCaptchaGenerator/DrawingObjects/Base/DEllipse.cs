@@ -1,6 +1,6 @@
 ﻿using SkiaSharp;
 
-namespace TextCaptchaGenerator.DrawingObjects
+namespace TextCaptchaGenerator.DrawingObjects.Base
 {
     public class DEllipse : BaseDrawable
     {

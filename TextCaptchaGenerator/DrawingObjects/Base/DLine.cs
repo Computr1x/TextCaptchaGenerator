@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TextCaptchaGenerator.DrawingObjects
+namespace TextCaptchaGenerator.DrawingObjects.Base
 {
     public class DLine : BaseDrawable
     {

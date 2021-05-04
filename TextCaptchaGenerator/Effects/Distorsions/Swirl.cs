@@ -13,13 +13,13 @@ namespace TextCaptchaGenerator.Effects.Distorsions
     {
 		public float Degree { get; }
         public float Radius { get; }
-        public float Twists { get; }
+        public float Twists { get; } = 1;
+        public bool Antialiasing { get; set; } = true;
 
         public Swirl(float degree, float radius)
         {
             Degree = degree;
             Radius = radius;
-            Twists = 1;
         }
 
         public Swirl(float degree, float radius, float twists) : this(degree, radius)
@@ -29,53 +29,83 @@ namespace TextCaptchaGenerator.Effects.Distorsions
 
         public void Draw(SKBitmap bitmap)
         {
+            void CalculateSwirl(ref float pixelX, ref float pixelY, ref float pixelDistance,
+                ref float pixelAngle, ref float twistAngle, ref float swirlAmount, 
+                ref float swirlX, ref float swirlY, ref float xOffset, ref float yOffset)
+            {
+                // compute the distance and angle from the swirl center:
+                pixelDistance = MathF.Sqrt((pixelX * pixelX) + (pixelY * pixelY));
+                pixelAngle = MathF.Atan2(pixelY, pixelX);
+
+                // work out how much of a swirl to apply (1.0 in the center fading out to 0.0 at the radius):
+                swirlAmount = 1.0f - (pixelDistance / Radius);
+                if (swirlAmount > 0.0f)
+                {
+                    twistAngle = Twists * swirlAmount * MathF.PI * 2.0f;
+
+                    // adjust the pixel angle and compute the adjusted pixel co-ordinates:
+                    pixelAngle += twistAngle;
+                    pixelX = MathF.Cos(pixelAngle) * pixelDistance;
+                    pixelY = MathF.Sin(pixelAngle) * pixelDistance;
+                }
+                xOffset = swirlX + pixelX;
+                yOffset = swirlY + pixelY;
+            }
+
 			int width = bitmap.Width;
 			int height = bitmap.Height;	
 
-
 			IntPtr pixelsAddr = bitmap.GetPixels();
-
 			uint[,] buffer = new uint[width, height];
 
 			unsafe
 			{
-                float x0 = 0.5f * (width - 1);
-                float y0 = 0.5f * (height - 1);
+                uint* pSrc = (uint*)pixelsAddr.ToPointer();
 
-                uint* ptr = (uint*)pixelsAddr.ToPointer();
+                float x0 = 0.5f * (width - 1), y0 = 0.5f * (height - 1),
+                swirlX = height / 2.0f, swirlY = width / 2.0f,
+                pixelX = 0, pixelY = 0, pixelDistance = 0, pixelAngle = 0, twistAngle = 0, swirlAmount = 0,
+                offsetX = 0, offsetY = 0;
 
-                float swirlX = height / 2.0f, swirlY = width / 2.0f;
-                float dx, dy, pixelDistance, pixelAngle, twistAngle, swirlAmount;
-
-                for (int x = 0; x < height; x++)
+                // swirl with antialiasing
+                if (Antialiasing)
                 {
-                    for (int y = 0; y < width; y++)
+                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+
+                    for (int x = 0; x < height; x++)
                     {
-                        // compute the distance and angle from the swirl center:
-                        dx = x - swirlX; dy = y - swirlY;
-                        pixelDistance = MathF.Sqrt((dx * dx) + (dy * dy));
-                        pixelAngle = MathF.Atan2(dy, dx);
-
-                        // work out how much of a swirl to apply (1.0 in the center fading out to 0.0 at the radius):
-                        swirlAmount = 1.0f - (pixelDistance / Radius);
-                        if (swirlAmount > 0.0f)
+                        pixelX = x - swirlX;
+                        for (int y = 0; y < width; y++)
                         {
-                            twistAngle = Twists * swirlAmount * MathF.PI * 2.0f;
-
-                            // adjust the pixel angle and compute the adjusted pixel co-ordinates:
-                            pixelAngle += twistAngle;
-                            dx = MathF.Cos(pixelAngle) * pixelDistance;
-                            dy = MathF.Sin(pixelAngle) * pixelDistance;
+                            pixelY = y - swirlY;
+                            CalculateSwirl(ref pixelX, ref pixelY, ref pixelDistance,
+                                ref pixelAngle, ref twistAngle, ref swirlAmount, 
+                                ref swirlX, ref swirlY, ref offsetX, ref offsetY);
+                            Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                                ref buffer, ref x, ref y,
+                                ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX, 
+                                ref fractionY, ref oneMinusX, ref oneMinusY);
                         }
-                        // read and write the pixel
-                        //dest.setPixel(x, y, src.getPixel(swirlX + pixelX, swirlY + pixelY));
-                        int newX = (int)MathF.Floor(swirlX + dx), newY = (int)MathF.Floor(swirlY + dy);
-
-                        if (!(newX < 0 || newX >= height || newY < 0 || newY >= width))
-                            buffer[x, y] = *(ptr + (newY * width + newX));
                     }
                 }
-
+                // swirl without antialiasing
+                else
+                {
+                    for (int x = 0; x < height; x++)
+                    {
+                        pixelX = x - swirlX;
+                        for (int y = 0; y < width; y++)
+                        {
+                            pixelY = y - swirlY;
+                            CalculateSwirl(ref pixelX, ref pixelY, ref pixelDistance,
+                                ref pixelAngle, ref twistAngle, ref swirlAmount, 
+                                ref swirlX, ref swirlY, ref offsetX, ref offsetY);
+                            Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                                ref buffer, ref x, ref y);
+                        }
+                    }
+                }   
                 fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);
@@ -83,47 +113,6 @@ namespace TextCaptchaGenerator.Effects.Distorsions
 			}
         }
 
-		[MethodImpl(MethodImplOptions.AggressiveInlining)]
-		uint MakePixel(byte red, byte green, byte blue, byte alpha) =>
-			(uint)((alpha << 24) | (blue << 16) | (green << 8) | red);
-
-
-        //		float swirlX = height / 2.0, swirlY = width / 2.0, swirlRadius = 256, swirlTwists = 2;
-
-        //				for (int x = 0; x<height; x++)
-        //				{
-        //					for (int y = 0; y<width; y++)
-        //					{
-        //						// compute the distance and angle from the swirl center:
-        //						float pixelX = x - swirlX;
-        //		float pixelY = y - swirlY;
-        //		float pixelDistance = MathF.Sqrt((pixelX * pixelX) + (pixelY * pixelY));
-        //		float pixelAngle = MathF.Atan2(pixelY, pixelX);
-
-        //		// work out how much of a swirl to apply (1.0 in the center fading out to 0.0 at the radius):
-        //		float swirlAmount = 1.0f - (pixelDistance / swirlRadius);
-        //                        if (swirlAmount > 0.0f)
-        //                        {
-        //							float twistAngle = swirlTwists * swirlAmount * MathF.PI * 2.0;
-
-        //		// adjust the pixel angle and compute the adjusted pixel co-ordinates:
-        //		pixelAngle += twistAngle;
-        //                            pixelX = MathF.Cos(pixelAngle) * pixelDistance;
-        //		pixelY = MathF.Sin(pixelAngle) * pixelDistance;
-        //	}
-        //	// read and write the pixel
-        //	//dest.setPixel(x, y, src.getPixel(swirlX + pixelX, swirlY + pixelY));
-        //	int newX = (int)MathF.Floor(swirlX + pixelX), newY = (int)MathF.Floor(swirlY + pixelY);
-
-        //						if (!(newX< 0 || newX >= height || newY< 0 || newY >= width))
-        //							buffer[newX, newY] = *ptr;
-        //						ptr++;
-        //					}
-        //				}
-
-        //				fixed (uint* newPtr = buffer)
-        //{
-        //	bitmap.SetPixels((IntPtr)newPtr);
-        //}
+		
     }
 }

@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using TextCaptchaGenerator.DrawingObjects;
+using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.Effects.Distorsions;
 using TextCaptchaGenerator.Hierarchy;
 
