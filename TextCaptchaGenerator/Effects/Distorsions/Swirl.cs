@@ -111,8 +111,6 @@ namespace TextCaptchaGenerator.Effects.Distorsions
                     bitmap.SetPixels((IntPtr)newPtr);
                 }
 			}
-        }
-
-		
+        }		
     }
 }

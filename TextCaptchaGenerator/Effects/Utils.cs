@@ -55,5 +55,11 @@ namespace TextCaptchaGenerator.Effects
             if (offsetX >= 0 && offsetX < height && offsetY >= 0 && offsetY < width)
                 dst[x, y] = *(pSrc + ((int)offsetY * width + (int)offsetX));
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static void SetColor(uint* pSrc, ref int width, ref int height, ref uint[,] dst, ref int x, ref int y)
+        {
+            dst[x, y] = *(pSrc + (y * width + x));
+        }
     }
 }
