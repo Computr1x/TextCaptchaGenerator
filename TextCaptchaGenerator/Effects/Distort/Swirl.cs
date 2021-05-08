@@ -2,7 +2,7 @@
 using System;
 using TextCaptchaGenerator.BaseObjects;
 
-namespace TextCaptchaGenerator.Effects.Distorsions
+namespace TextCaptchaGenerator.Effects.Distort
 {
     public class Swirl : IEffect
     {

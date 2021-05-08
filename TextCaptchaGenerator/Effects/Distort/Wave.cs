@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TextCaptchaGenerator.BaseObjects;
 
-namespace TextCaptchaGenerator.Effects.Distorsions
+namespace TextCaptchaGenerator.Effects.Distort
 {
     public class Wave : IEffect
     {

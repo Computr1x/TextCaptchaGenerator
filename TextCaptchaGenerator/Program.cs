@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
-using TextCaptchaGenerator.Effects.Distorsions;
+using TextCaptchaGenerator.Effects.Distort;
 using TextCaptchaGenerator.Hierarchy;
 
 namespace TextCaptchaGenerator
@@ -53,23 +53,29 @@ namespace TextCaptchaGenerator
 			// objects
 			DRectangle dRect = new DRectangle(new SKRect(200, 200, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
 			DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
+			DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(251, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
 
 			layer2.Drawables.Add(dRect);
 			layer2.Drawables.Add(dLine);
+			layer2.Drawables.Add(dLine2);
 			image.Layers.Add(layer2);
 
             // effects
             //Swirl effect = new Swirl(50, 2, 30, 30);
-            Wave effect = new Wave(35, 6, Wave.eWaveType.Square);
+            //Wave effect = new Wave(35, 6, Wave.eWaveType.Square);
             //Bulge effect = new Bulge(64, 64, 100, strenght);
+            PolarCoordinates effect = new PolarCoordinates();
             layer2.Effects.Add(effect);
 
+            PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular);
+            layer2.Effects.Add(effect2);
 
-			// image to png
-			using (var res = image.DrawAll())
+
+            // image to png
+            using (var res = image.DrawAll())
 			{
 				using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
-				using (var stream = File.OpenWrite(Path.Combine(dataPath, $"test.png")))
+				using (var stream = File.OpenWrite(Path.Combine(dataPath, $"test1.png")))
 				{
 					data.SaveTo(stream);
 				}
