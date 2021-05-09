@@ -64,11 +64,10 @@ namespace TextCaptchaGenerator
             //Swirl effect = new Swirl(50, 2, 30, 30);
             //Wave effect = new Wave(35, 6, Wave.eWaveType.Square);
             //Bulge effect = new Bulge(64, 64, 100, strenght);
-            PolarCoordinates effect = new PolarCoordinates();
-            layer2.Effects.Add(effect);
-
-            PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular);
-            layer2.Effects.Add(effect2);
+            //PolarCoordinates effect = new PolarCoordinates();
+            //layer2.Effects.Add(effect);
+            //PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular);
+            //layer2.Effects.Add(effect2);
 
 
             // image to png
