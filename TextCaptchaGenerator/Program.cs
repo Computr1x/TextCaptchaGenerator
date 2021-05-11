@@ -30,7 +30,7 @@ namespace TextCaptchaGenerator
 
 		private static void Test()
 		{
-			Image image = new Image(256, 256);
+			Image image = new Image(512, 256);
 
 			// layer1 
 			Layer layer1 = new Layer(image.info, SKColors.White);
@@ -51,22 +51,29 @@ namespace TextCaptchaGenerator
 			// layer2
 			Layer layer2 = new Layer(image.info, SKColors.Transparent);
 			// objects
-			DRectangle dRect = new DRectangle(new SKRect(200, 200, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
+			DRectangle dRect = new DRectangle(new SKRect(200, 225, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
 			DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
 			DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(251, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
+			DLine dLine3 = new DLine(new SKPoint(1, 1), new SKPoint(1, 512), new SKPaint() { Color = SKColors.Brown, IsAntialias = true, StrokeWidth = 2 });
+			DPolygon dPolygon = new DPolygon(new SKPoint[] { new SKPoint (350, 5), new SKPoint(350, 250), new SKPoint(450, 175)}, 
+				new SKPaint() { Color = SKColors.Yellow, IsAntialias = true, StrokeWidth = 3, Style = SKPaintStyle.StrokeAndFill });
 
 			layer2.Drawables.Add(dRect);
 			layer2.Drawables.Add(dLine);
 			layer2.Drawables.Add(dLine2);
+			layer2.Drawables.Add(dLine3);
+			layer2.Drawables.Add(dPolygon);
 			image.Layers.Add(layer2);
 
             // effects
-            //Swirl effect = new Swirl(50, 2, 30, 30);
-            //Wave effect = new Wave(35, 6, Wave.eWaveType.Square);
-            //Bulge effect = new Bulge(64, 64, 100, strenght);
-            //PolarCoordinates effect = new PolarCoordinates();
+            //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
+            //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
+            //Bulge effect = new Bulge(64, 64, 100, -1);
             //layer2.Effects.Add(effect);
-            //PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular);
+
+            PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
+            layer2.Effects.Add(effect);
+            //PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular) { Antialiasing = true };
             //layer2.Effects.Add(effect2);
 
 

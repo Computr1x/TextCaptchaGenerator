@@ -39,12 +39,14 @@ namespace TextCaptchaGenerator.Effects
             oneMinusY = 1.0f - fractionY;
 
             // read and write the pixel
-            if (floorX >= 0 && ceilX < height && floorY >= 0 && ceilY < width)
+            if (floorX >= 0 && ceilX < width && floorY >= 0 && ceilY < height)
             {
-                dst[x,y] = MultiplyFloatToPixel(oneMinusY, MultiplyFloatToPixel(oneMinusX, *(pSrc + floorX * width + floorY)) +
-                    MultiplyFloatToPixel(fractionX, *(pSrc + ceilX * width + floorY))) + 
-                    MultiplyFloatToPixel(fractionY, MultiplyFloatToPixel(oneMinusX, *(pSrc + floorX * width + ceilY)) +
-                        MultiplyFloatToPixel(fractionX, *(pSrc + ceilX * width + ceilY)));
+                dst[y, x] = MultiplyFloatToPixel(oneMinusY, 
+                        MultiplyFloatToPixel(oneMinusX, *(pSrc + floorY * width + floorX)) +
+                        MultiplyFloatToPixel(fractionX, *(pSrc + floorY * width + ceilX))) + 
+                    MultiplyFloatToPixel(fractionY, 
+                        MultiplyFloatToPixel(oneMinusX, *(pSrc + ceilY * width + floorX)) +
+                        MultiplyFloatToPixel(fractionX, *(pSrc + ceilY * width + ceilX)));
             }
         }
 
@@ -52,14 +54,14 @@ namespace TextCaptchaGenerator.Effects
         public unsafe static void SetColor(uint* pSrc, ref int width, ref int height, ref float offsetX, ref float offsetY,
             ref uint[,] dst, ref int x, ref int y)
         {
-            if (offsetX >= 0 && offsetX < height && offsetY >= 0 && offsetY < width)
-                dst[x, y] = *(pSrc + ((int)offsetY * width + (int)offsetX));
+            if (offsetX >= 0 && offsetX < width && offsetY >= 0 && offsetY < height)
+                dst[y, x] = *(pSrc + ((int)offsetY * width + (int)offsetX));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static void SetColor(uint* pSrc, ref int width, ref int height, ref uint[,] dst, ref int x, ref int y)
         {
-            dst[x, y] = *(pSrc + (y * width + x));
+            dst[y, x] = *(pSrc + (y * width + x));
         }
     }
 }
