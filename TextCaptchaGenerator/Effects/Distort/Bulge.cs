@@ -44,7 +44,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             int height = bitmap.Height;
 
             IntPtr pixelsAddr = bitmap.GetPixels();
-            uint[,] buffer = new uint[width, height];
+            uint[,] buffer = new uint[height, width];
 
             unsafe
             {
