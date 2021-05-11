@@ -47,10 +47,10 @@ namespace TextCaptchaGenerator.Effects.Distort
             }
 
             int width = bitmap.Width;
-            int height = bitmap.Height;
+            int height = bitmap.Height;     
 
             IntPtr pixelsAddr = bitmap.GetPixels();
-            uint[,] buffer = new uint[width, height];
+            uint[,] buffer = new uint[height, width];
 
             unsafe
             {
@@ -58,7 +58,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
                 float centerX = width / 2f, centerY = height / 2f, 
                     pixelX = 0, pixelY = 0, offsetX = 0, offsetY = 0,
-                    maxRadius = MathF.Min(width, height) / 2f,
+                    maxRadius = MathF.Sqrt(width * width + height * height) / 4f,
                     scaleX = width / maxRadius, scaleY = height / (2f * MathF.PI);
 
                 CalcPolarDelegate calcPolar = PolarType switch
@@ -73,9 +73,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                     float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                     int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < height; x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        for (int y = 0; y < width; y++)
+                        for (int y = 0; y < height; y++)
                         {
                             calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
                                 ref pixelX, ref pixelY, ref offsetX, ref offsetY);
@@ -89,9 +89,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 // wave without antialiasing
                 else
                 {
-                    for (int x = 0; x < height; x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        for (int y = 0; y < width; y++)
+                        for (int y = 0; y < height; y++)
                         {
                             calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
                                 ref pixelX, ref pixelY, ref offsetX, ref offsetY);
