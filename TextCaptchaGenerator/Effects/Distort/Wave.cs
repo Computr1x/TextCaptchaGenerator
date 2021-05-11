@@ -69,7 +69,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             int height = bitmap.Height;
 
             IntPtr pixelsAddr = bitmap.GetPixels();
-            uint[,] buffer = new uint[width, height];
+            uint[,] buffer = new uint[height, width];
 
             unsafe
             {
@@ -89,9 +89,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                     float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                     int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < height; x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        for (int y = 0; y < width; y++)
+                        for (int y = 0; y < height; y++)
                         {
                             CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
                             Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
@@ -104,9 +104,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 // wave without antialiasing
                 else
                 {
-                    for (int x = 0; x < height; x++)
+                    for (int x = 0; x < width; x++)
                     {
-                        for (int y = 0; y < width; y++)
+                        for (int y = 0; y < height; y++)
                         {
                             CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
                             Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
