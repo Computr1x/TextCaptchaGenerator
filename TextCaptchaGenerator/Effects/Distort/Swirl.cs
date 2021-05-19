@@ -62,7 +62,6 @@ namespace TextCaptchaGenerator.Effects.Distort
                 offsetX = swirlX + pixelX;
                 offsetY = swirlY + pixelY;
             }
-
             int width = bitmap.Width;
             int height = bitmap.Height;
 
@@ -117,7 +116,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                             CalculateSwirl(ref x, ref y, ref pixelX, ref pixelY, ref pixelDistance,
                                 ref pixelAngle, ref twistAngle, ref swirlAmount,
                                 ref swirlX, ref swirlY, ref offsetX, ref offsetY);
-                            Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                            Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y);
                         }
                     }

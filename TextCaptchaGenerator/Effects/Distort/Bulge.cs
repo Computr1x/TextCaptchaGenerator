@@ -92,7 +92,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                             {
                                 CalculateBulge(ref x, ref y, ref interpolationFactor, ref pixelDistance, ref pixelAngle,
                                         ref pixelX, ref pixelY, ref offsetX, ref offsetY);
-                                Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                                Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                     ref buffer, ref x, ref y);
                             }
                             else

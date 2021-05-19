@@ -6,14 +6,14 @@ namespace TextCaptchaGenerator.Effects.Distort
 {
     public class PolarCoordinates : IEffect
     {
-        public enum ePolarType { RectangularToPolar, PolarToRectangular };
+        public enum eConversionType { RectangularToPolar, PolarToRectangular };
 
-        public ePolarType PolarType { get; } = ePolarType.RectangularToPolar;
+        public eConversionType PolarType { get; } = eConversionType.RectangularToPolar;
         public bool Antialiasing { get; set; } = true;
         
         public PolarCoordinates() { }
 
-        public PolarCoordinates(ePolarType polarType)
+        public PolarCoordinates(eConversionType polarType)
         {
             PolarType = polarType;
         }
@@ -63,7 +63,7 @@ namespace TextCaptchaGenerator.Effects.Distort
 
                 CalcPolarDelegate calcPolar = PolarType switch
                 {
-                    ePolarType.RectangularToPolar => RectangularToPolar,
+                    eConversionType.RectangularToPolar => RectangularToPolar,
                     _ => PolarToRectangular,
                 };
 
@@ -95,7 +95,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                         {
                             calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
                                 ref pixelX, ref pixelY, ref offsetX, ref offsetY);
-                            Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                            Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y);
                         }
                     }

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.Effects.Distort;
+using TextCaptchaGenerator.Effects.Transform;
 using TextCaptchaGenerator.Hierarchy;
 
 namespace TextCaptchaGenerator
@@ -65,14 +66,21 @@ namespace TextCaptchaGenerator
 			layer2.Drawables.Add(dPolygon);
 			image.Layers.Add(layer2);
 
-            // effects
+            // distort
             //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
             //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
             //Bulge effect = new Bulge(64, 64, 100, -1);
-            //layer2.Effects.Add(effect);
+            //Ripple effect = new Ripple(50, 50);
 
-            PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
+            // transform
+            //Scale effect = new Scale(1f, 0.9f);
+            //Shift effect = new Shift(0, 100);
+            Flip effect = new Flip(Flip.eFlipType.Both);
+            //Rotate effect = new Rotate(45);
             layer2.Effects.Add(effect);
+
+            //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
+            //layer2.Effects.Add(effect);
             //PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular) { Antialiasing = true };
             //layer2.Effects.Add(effect2);
 

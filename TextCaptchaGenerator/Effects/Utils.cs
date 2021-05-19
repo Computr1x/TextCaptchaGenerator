@@ -51,11 +51,52 @@ namespace TextCaptchaGenerator.Effects
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CheckBoundaries(ref int width, ref int height, ref float x, ref float y)
+        {
+            return x >= 0 && x < width && y >= 0 && y < height;
+        }
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool CheckBoundaries(ref int width, ref int height, ref int x, ref int y)
+        {
+            return x >= 0 && x < width && y >= 0 && y < height;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static void SetColor(uint* pSrc, ref int width, ref int height, ref int offsetX, ref int offsetY,
+            ref uint[,] dst, ref int x, ref int y)
+        {
+            dst[y, x] = *(pSrc + (offsetY * width + offsetX));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static void SetColor(uint* pSrc, ref int width, ref int height, ref float offsetX, ref float offsetY,
             ref uint[,] dst, ref int x, ref int y)
         {
-            if (offsetX >= 0 && offsetX < width && offsetY >= 0 && offsetY < height)
+            dst[y, x] = *(pSrc + ((int)offsetY * width + (int)offsetX));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static void SetColorCheckSrc(uint* pSrc, ref int width, ref int height, ref float offsetX, ref float offsetY,
+            ref uint[,] dst, ref int x, ref int y)
+        {
+            if (CheckBoundaries(ref width, ref height, ref offsetX, ref offsetY))
                 dst[y, x] = *(pSrc + ((int)offsetY * width + (int)offsetX));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static void SetColorCheckSrcDst(uint* pSrc, ref int width, ref int height, ref float offsetX, ref float offsetY,
+            ref uint[,] dst, ref int x, ref int y)
+        {
+            if (CheckBoundaries(ref width, ref height, ref offsetX, ref offsetY) && CheckBoundaries(ref width, ref height, ref x, ref y))
+                dst[y, x] = *(pSrc + ((int)offsetY * width + (int)offsetX));
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public unsafe static void SetColorCheckSrc(uint* pSrc, ref int width, ref int height, ref int offsetX, ref int offsetY,
+            ref uint[,] dst, ref int x, ref int y)
+        {
+            if (CheckBoundaries(ref width, ref height, ref offsetX, ref offsetY))
+                dst[y, x] = *(pSrc + (offsetY * width + offsetX));
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

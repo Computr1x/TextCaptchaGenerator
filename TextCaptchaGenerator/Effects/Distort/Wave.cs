@@ -109,7 +109,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                         for (int y = 0; y < height; y++)
                         {
                             CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
-                            Utils.SetColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
+                            Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y);
                         }
                     }
