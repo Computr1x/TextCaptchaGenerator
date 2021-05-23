@@ -73,15 +73,16 @@ namespace TextCaptchaGenerator
             //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
             //Bulge effect = new Bulge(64, 64, 100, -1);
             //Ripple effect = new Ripple(50, 50);
+            //SlitScan effect = new SlitScan();
 
             // transform
             //Scale effect = new Scale(1f, 0.9f);
             //Shift effect = new Shift(0, 100);
             //Flip effect = new Flip(Flip.eFlipType.Both);
             //Rotate effect = new Rotate(45);
-            Skew effect = new Skew(30, 0, 0, -45);
-            //Skew effect = new Skew(0, 30, 0, -45);
-			layer2.Effects.Add(effect);
+            //Skew effect = new Skew(30, 0, 0, 30);
+            Skew effect = new Skew(30, 0, -45, 0);
+            layer2.Effects.Add(effect);
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
             //layer2.Effects.Add(effect);
