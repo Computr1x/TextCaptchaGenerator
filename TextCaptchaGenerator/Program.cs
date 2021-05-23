@@ -54,8 +54,9 @@ namespace TextCaptchaGenerator
 			// objects
 			DRectangle dRect = new DRectangle(new SKRect(200, 225, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
 			DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
-			DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(251, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
+			DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(512, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
 			DLine dLine3 = new DLine(new SKPoint(1, 1), new SKPoint(1, 512), new SKPaint() { Color = SKColors.Brown, IsAntialias = true, StrokeWidth = 2 });
+			DLine dLine4 = new DLine(new SKPoint(511, 1), new SKPoint(511, 255), new SKPaint() { Color = SKColors.Blue, IsAntialias = true, StrokeWidth = 3 });
 			DPolygon dPolygon = new DPolygon(new SKPoint[] { new SKPoint (350, 5), new SKPoint(350, 250), new SKPoint(450, 175)}, 
 				new SKPaint() { Color = SKColors.Yellow, IsAntialias = true, StrokeWidth = 3, Style = SKPaintStyle.StrokeAndFill });
 
@@ -63,6 +64,7 @@ namespace TextCaptchaGenerator
 			layer2.Drawables.Add(dLine);
 			layer2.Drawables.Add(dLine2);
 			layer2.Drawables.Add(dLine3);
+			layer2.Drawables.Add(dLine4);
 			layer2.Drawables.Add(dPolygon);
 			image.Layers.Add(layer2);
 
@@ -75,9 +77,11 @@ namespace TextCaptchaGenerator
             // transform
             //Scale effect = new Scale(1f, 0.9f);
             //Shift effect = new Shift(0, 100);
-            Flip effect = new Flip(Flip.eFlipType.Both);
+            //Flip effect = new Flip(Flip.eFlipType.Both);
             //Rotate effect = new Rotate(45);
-            layer2.Effects.Add(effect);
+            Skew effect = new Skew(30, 0, 0, -45);
+            //Skew effect = new Skew(0, 30, 0, -45);
+			layer2.Effects.Add(effect);
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
             //layer2.Effects.Add(effect);
