@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.Effects.Distort;
+using TextCaptchaGenerator.Effects.Noise;
 using TextCaptchaGenerator.Effects.Transform;
 using TextCaptchaGenerator.Hierarchy;
 
@@ -25,11 +26,10 @@ namespace TextCaptchaGenerator
 
         static void Main(string[] args)
         {
-			Test();
-
+			Test($"test1.png");
 		}
 
-		private static void Test()
+		private static void Test(string name)
 		{
 			Image image = new Image(512, 256);
 
@@ -68,20 +68,23 @@ namespace TextCaptchaGenerator
 			layer2.Drawables.Add(dPolygon);
 			image.Layers.Add(layer2);
 
-            // distort
-            //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
-            //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
-            //Bulge effect = new Bulge(64, 64, 100, -1);
-            //Ripple effect = new Ripple(50, 50);
-            //SlitScan effect = new SlitScan();
+			// distort
+			//Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
+			//Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
+			//Bulge effect = new Bulge(64, 64, 100, -1);
+			//Ripple effect = new Ripple(50, 50);
+			//SlitScan effect = new SlitScan();
 
-            // transform
-            //Scale effect = new Scale(1f, 0.9f);
-            //Shift effect = new Shift(0, 100);
-            //Flip effect = new Flip(Flip.eFlipType.Both);
-            //Rotate effect = new Rotate(45);
-            //Skew effect = new Skew(30, 0, 0, 30);
-            Skew effect = new Skew(30, 0, -45, 0);
+			// transform
+			//Scale effect = new Scale(1f, 0.9f);
+			//Shift effect = new Shift(0, 100);
+			//Flip effect = new Flip(Flip.eFlipType.Both);
+			//Rotate effect = new Rotate(45);
+			//Skew effect = new Skew(30, 0, 0, 30);
+
+
+			// noise
+			GaussNoise effect = new GaussNoise(200) { Monochrome = false };
             layer2.Effects.Add(effect);
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
@@ -94,7 +97,7 @@ namespace TextCaptchaGenerator
             using (var res = image.DrawAll())
 			{
 				using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
-				using (var stream = File.OpenWrite(Path.Combine(dataPath, $"test1.png")))
+				using (var stream = File.OpenWrite(Path.Combine(dataPath, name)))
 				{
 					data.SaveTo(stream);
 				}

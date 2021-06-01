@@ -6,22 +6,31 @@ namespace TextCaptchaGenerator.Effects.Distort
 {
     public class SlitScan : IEffect
     {
-        public bool Antialiasing { get; set; } = true;
+        public float Time { get; }
 
-
-        float Mix(float a, float b, float l)
+        public SlitScan()
         {
-            return a + (b - a) * l;
+            Time = 3f;
         }
 
-        float UpDown(float v)
+        public SlitScan(float time)
         {
-            return MathF.Sin(v) * 0.5f + 0.5f;
+            Time = time;
         }
 
         public void Draw(SKBitmap bitmap)
         {
-            float t1 = 1.5f, t2 = t1 * 0.37f;
+            float Mix(float a, float b, float l)
+            {
+                return a + (b - a) * l;
+            }
+
+            float UpDown(float v)
+            {
+                return MathF.Sin(v) * 0.5f + 0.5f;
+            }
+
+            float t1 = Time, t2 = t1 * 0.37f;
 
 
             int width = bitmap.Width;
@@ -33,12 +42,10 @@ namespace TextCaptchaGenerator.Effects.Distort
             unsafe
             {
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
-                float pixelX = 0, pixelY = 0, offsetX = 0, offsetY = 0, pixelDistance = 0, pixelAngle = 0;
+                float offsetX = 0, offsetY = 0, v = 0, offset = 0, offset1 = 0, offset2 = 0;
 
-                float v = 0, offset = 0, offset1 = 0, offset2 = 0;
-
-                // meow
-                for (int y = 0; y < width; y++)
+                
+                for (int y = 0; y < height; y++)
                 {
                     v = y / (float) height;
 
@@ -49,7 +56,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                     offsetY = y * height / (float) height + offset;
                     offsetY = Math.Max(0, Math.Min(height - 1, offsetY));
 
-                    for (int x = 0; x < height; x++)
+                    for (int x = 0; x < width; x++)
                     {
                         offsetX = x;
                         Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,

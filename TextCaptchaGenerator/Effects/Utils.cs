@@ -24,6 +24,30 @@ namespace TextCaptchaGenerator.Effects
             (byte)((pixel & 0xff) * val));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint MultiplyFloatToPixelWithoutAlpha(float val, uint pixel) =>
+            MakePixel((byte)((pixel >> 24)),
+            (byte)((pixel >> 16 & 0xff) * val),
+            (byte)((pixel >> 8 & 0xff) * val),
+            (byte)((pixel & 0xff) * val));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint MultiplyFloatToPixel(uint pixel1, uint pixel2) =>
+             MakePixel(
+                (byte)((pixel1 & 0xff) * (pixel2 & 0xff) / 255),
+                (byte)((pixel1 >> 8 & 0xff) * (pixel2 >> 8 & 0xff) / 255),
+                (byte)((pixel1 >> 16 & 0xff) * (pixel2 >> 16 & 0xff) / 255),
+                (byte)((pixel1 >> 24 & 0xff) * (pixel2 >> 24 & 0xff) / 255));
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static uint MultiplyFloatToPixelWithoutAlpha(uint pixel1, uint pixel2) =>
+            MakePixel(
+                (byte)((pixel1 & 0xff) * (pixel2 & 0xff) / 255),
+                (byte)((pixel1 >> 8 & 0xff) * (pixel2 >> 8 & 0xff) / 255),
+                (byte)((pixel1 >> 16 & 0xff) * (pixel2 >> 16 & 0xff) / 255),
+                (byte) Math.Max(pixel1 >> 16 & 0xff, pixel2 >> 16 & 0xff));
+
+        // set color methods
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public unsafe static void SetAntialisedColor(uint* pSrc, ref int width, ref int height, ref float offsetX, ref float offsetY, 
             ref uint[,] dst, ref int x, ref int y,
             ref int floorX, ref int floorY, ref int ceilX, ref int ceilY, 
@@ -50,6 +74,7 @@ namespace TextCaptchaGenerator.Effects
             }
         }
 
+        // boundaries check
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool CheckBoundaries(ref int width, ref int height, ref float x, ref float y)
         {
