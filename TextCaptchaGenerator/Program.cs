@@ -84,8 +84,9 @@ namespace TextCaptchaGenerator
 
 
 			// noise
-			GaussNoise effect = new GaussNoise(200) { Monochrome = false };
-            layer2.Effects.Add(effect);
+			//GaussNoise effect = new GaussNoise(100) { Monochrome = true };
+			PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f };
+            layer1.Effects.Add(effect);
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
             //layer2.Effects.Add(effect);
