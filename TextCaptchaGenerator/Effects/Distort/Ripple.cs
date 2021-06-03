@@ -52,9 +52,6 @@ namespace TextCaptchaGenerator.Effects.Distort
                 pixelX = x - centerX;
                 pixelY = y - centerY;
 
-                // pixelDistance = MathF.Sqrt(pixelX * pixelX + pixelY * pixelY)
-                // pixelAngle = MathF.Atan2(pixelY, pixelX)
-
                 r = (MathF.Sqrt(pixelX * pixelX + pixelY * pixelY) - Radius) / WaveLength;
                 z = 1f / (1f + MathF.Pow(r / TraintWidth, 2f)) * MathF.Sin(r * 2f * MathF.PI);
 
@@ -82,45 +79,31 @@ namespace TextCaptchaGenerator.Effects.Distort
                     centerY = Y;
                 }
 
-                // swirl with antialiasing
-                if (Antialiasing)
-                {
-                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
-                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+                // swirl
+                float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateRipple(ref x, ref y,
-                                    ref centerX, ref centerY,
-                                    ref pixelX, ref pixelY,
-                                    ref r, ref k, ref z,
-                                    ref offsetX, ref offsetY);
+                        CalculateRipple(ref x, ref y,
+                                ref centerX, ref centerY,
+                                ref pixelX, ref pixelY,
+                                ref r, ref k, ref z,
+                                ref offsetX, ref offsetY);
+
+                        if (Antialiasing)
                             Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                     ref buffer, ref x, ref y,
                                     ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX,
                                     ref fractionY, ref oneMinusX, ref oneMinusY);
-                        }
-                    }
-                }
-                // swirl without antialiasing
-                else
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateRipple(ref x, ref y,
-                                   ref centerX, ref centerY,
-                                   ref pixelX, ref pixelY,
-                                   ref r, ref k, ref z,
-                                   ref offsetX, ref offsetY);
+                        else
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
-                                ref buffer, ref x, ref y);
-                        }
+                            ref buffer, ref x, ref y);
                     }
                 }
+
                 fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);

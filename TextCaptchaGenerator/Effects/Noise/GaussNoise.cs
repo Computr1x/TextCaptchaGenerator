@@ -62,35 +62,24 @@ namespace TextCaptchaGenerator.Effects.Noise
 
                 Random rand = new Random();
                 float u1 = 0, u2 = 0, randStdNormal = 0;
-                
 
-                if (Monochrome)
+
+                byte color = 0, r = 0, g = 0, b = 0;
+                for (int x = 0; x < width; x++)
                 {
-                    byte color = 0;
-                    for (int x = 0; x < width; x++)
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int y = 0; y < height; y++)
-                        {
-                            uint colorSrc = *(pSrc + (y * width + x));
-                            if (colorSrc >> 24 == 0)
-                                continue;
+                        uint colorSrc = *(pSrc + (y * width + x));
+                        if (colorSrc >> 24 == 0)
+                            continue;
 
+                        if (Monochrome)
+                        {
                             color = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
                             buffer[y, x] = Utils.MultiplyFloatToPixel(Utils.MakePixel(color, color, color, 255), colorSrc);
                         }
-                    }
-                }
-                else
-                {
-                    byte r = 0, g = 0, b = 0;
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
+                        else
                         {
-                            uint colorSrc = *(pSrc + (y * width + x));
-                            if (colorSrc >> 24 == 0)
-                                continue;
-
                             r = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
                             g = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
                             b = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);

@@ -50,58 +50,35 @@ namespace TextCaptchaGenerator.Effects.Transform
                     step = 0, offsetX = 0, offsetY = 0, currentY = 0, currentY2 = 0;
                 int xStart = 0, xEnd = 0;
 
-                // antialising code
-                if (Antialiasing)
+                // skew
+                float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+
+                for (int y = 0; y < height; y++)
                 {
-                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
-                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+                    currentY = topLeft ? y : height - y - 1;
+                    currentY2 = topRight ? y : height - y - 1;
 
-                    for (int y = 0; y < height; y++)
+                    xStart = (int)(leftTan * currentY);
+                    xEnd = width + (int)(rightTan * currentY2);
+
+                    step = width / (float)(xEnd - xStart);
+                    offsetY = y;
+                    offsetX = 0;
+
+                    for (int x = xStart; x < xEnd; x++)
                     {
-                        currentY = topLeft ? y : height - y - 1;
-                        currentY2 = topRight ? y : height - y - 1;
-
-                        xStart = (int)(leftTan * currentY);
-                        xEnd = width + (int)(rightTan * currentY2);
-
-                        step = width / (float)(xEnd - xStart);
-                        offsetY = y;
-                        offsetX = 0;
-
-                        for (int x = xStart; x < xEnd; x++)
-                        {
+                        if (Antialiasing)
                             Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                     ref buffer, ref x, ref y,
                                     ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX,
                                     ref fractionY, ref oneMinusX, ref oneMinusY);
-                            offsetX += step;
-                        }
-                    }
-                }
-                else
-                {
-                    for (int y = 0; y < height; y++)
-                    {
-                        currentY = topLeft ? y : height - y - 1;
-                        currentY2 = topRight ? y : height - y - 1;
-
-                        xStart = (int)(leftTan * currentY);
-                        xEnd = width + (int)(rightTan * currentY2);
-
-                        step = width / (float)(xEnd - xStart);
-                        offsetY = y;
-                        offsetX = 0;
-
-                        for (int x = xStart; x < xEnd; x++)
-                        {
+                        else
                             Utils.SetColorCheckSrcDst(pSrc, ref width, ref height, ref offsetX, ref offsetY,
-                                        ref buffer, ref x, ref y);
-                            offsetX += step;
-                        }
+                                    ref buffer, ref x, ref y);
+                        offsetX += step;
                     }
                 }
-                
-
 
                 fixed (uint* newPtr = buffer)
                 {

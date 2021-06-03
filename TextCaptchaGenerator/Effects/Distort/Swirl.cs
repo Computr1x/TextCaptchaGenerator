@@ -86,41 +86,29 @@ namespace TextCaptchaGenerator.Effects.Distort
                     swirlY = Y;
                 }
 
-                // swirl with antialiasing
-                if (Antialiasing)
-                {
-                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
-                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+                // swirl 
+                float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateSwirl(ref x, ref y, ref pixelX, ref pixelY, ref pixelDistance,
-                                ref pixelAngle, ref twistAngle, ref swirlAmount,
-                                ref swirlX, ref swirlY, ref offsetX, ref offsetY);
+                        CalculateSwirl(ref x, ref y, ref pixelX, ref pixelY, ref pixelDistance,
+                            ref pixelAngle, ref twistAngle, ref swirlAmount,
+                            ref swirlX, ref swirlY, ref offsetX, ref offsetY);
+
+                        if (Antialiasing)
                             Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                     ref buffer, ref x, ref y,
                                     ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX,
                                     ref fractionY, ref oneMinusX, ref oneMinusY);
-                        }
-                    }
-                }
-                // swirl without antialiasing
-                else
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateSwirl(ref x, ref y, ref pixelX, ref pixelY, ref pixelDistance,
-                                ref pixelAngle, ref twistAngle, ref swirlAmount,
-                                ref swirlX, ref swirlY, ref offsetX, ref offsetY);
+                        else
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y);
-                        }
                     }
                 }
+
                 fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);

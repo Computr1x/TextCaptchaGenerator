@@ -83,37 +83,27 @@ namespace TextCaptchaGenerator.Effects.Distort
                     _ => SquareWave,
                 };
 
-                // wave with antialiasing
-                if (Antialiasing)
-                {
-                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
-                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+                // wave 
+                float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
+                        CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
+
+                        if (Antialiasing)
                             Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y,
                                 ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX,
                                 ref fractionY, ref oneMinusX, ref oneMinusY);
-                        }
-                    }
-                }
-                // wave without antialiasing
-                else
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
+                        else
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y);
-                        }
                     }
                 }
+
                 fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);

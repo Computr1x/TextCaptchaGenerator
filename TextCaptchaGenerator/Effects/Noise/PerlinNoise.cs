@@ -68,7 +68,9 @@ namespace TextCaptchaGenerator.Effects.Noise
                         noise = (byte)(MathF.Round((Noise(x / (float)width, y / (float)height, Octaves, Persistence) + 1f / 2f) * 255 / Step) * Step);
                         //buffer[y, x] = ConvertTotalToRgb((int) (MathF.Round(noise * 255 / Step) * Step));
 
-                        color = Monochrome ? Utils.MakePixel(noise, noise, noise, 255) : ConvertTotalToRgb(noise);
+                        color = Monochrome ? 
+                            Utils.MakePixel(noise, noise, noise, 255) :
+                            HSVtoRGB(noise / 255f, 1.0f, 1.0f, 1.0f);
 
                         buffer[y, x] = Utils.MultiplyFloatToPixel(color, colorSrc);
                     }
@@ -79,11 +81,6 @@ namespace TextCaptchaGenerator.Effects.Noise
                     bitmap.SetPixels((IntPtr)newPtr);
                 }
             }
-        }
-
-        public static uint ConvertTotalToRgb(byte value)
-        {
-            return HSVtoRGB(value / 255f, 1.0f, 1.0f, 1.0f);
         }
 
 

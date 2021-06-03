@@ -67,39 +67,27 @@ namespace TextCaptchaGenerator.Effects.Distort
                     _ => PolarToRectangular,
                 };
 
-                // wave with antialiasing
-                if (Antialiasing)
-                {
-                    float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
-                    int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
+                float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
+                int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                    for (int x = 0; x < width; x++)
+                for (int x = 0; x < width; x++)
+                {
+                    for (int y = 0; y < height; y++)
                     {
-                        for (int y = 0; y < height; y++)
-                        {
-                            calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
-                                ref pixelX, ref pixelY, ref offsetX, ref offsetY);
-                            Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY, 
+                        calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
+                            ref pixelX, ref pixelY, ref offsetX, ref offsetY);
+
+                        if (Antialiasing)
+                            Utils.SetAntialisedColor(pSrc, ref width, ref height, ref offsetX, ref offsetY,
                                 ref buffer, ref x, ref y,
                                 ref floorX, ref floorY, ref ceilX, ref ceilY, ref fractionX,
                                 ref fractionY, ref oneMinusX, ref oneMinusY);
-                        }
-                    }
-                }
-                // wave without antialiasing
-                else
-                {
-                    for (int x = 0; x < width; x++)
-                    {
-                        for (int y = 0; y < height; y++)
-                        {
-                            calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
-                                ref pixelX, ref pixelY, ref offsetX, ref offsetY);
+                        else
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref offsetX, ref offsetY,
-                                ref buffer, ref x, ref y);
-                        }
+                           ref buffer, ref x, ref y);
                     }
                 }
+
                 fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);
