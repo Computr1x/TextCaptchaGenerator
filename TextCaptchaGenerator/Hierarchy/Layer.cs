@@ -22,7 +22,7 @@ namespace TextCaptchaGenerator.Hierarchy
         // TO DO
         // add opacity
 
-
+        
         public Layer(SKImageInfo imageInfo) : this(imageInfo, SKBlendMode.SrcOver, SKColors.Transparent) { }
 
         public Layer(SKImageInfo imageInfo, SKColor background) : this(imageInfo, SKBlendMode.SrcOver, background) { }

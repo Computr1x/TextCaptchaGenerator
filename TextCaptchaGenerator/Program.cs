@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
+using TextCaptchaGenerator.Effects;
 using TextCaptchaGenerator.Effects.Distort;
+using TextCaptchaGenerator.Effects.Glitch;
 using TextCaptchaGenerator.Effects.Noise;
 using TextCaptchaGenerator.Effects.Transform;
 using TextCaptchaGenerator.Hierarchy;
@@ -27,12 +29,16 @@ namespace TextCaptchaGenerator
 
         static void Main(string[] args)
         {
-			Stopwatch sw = Stopwatch.StartNew();
-			int n = 25;
-			for(int i = 0; i < n; i++)
-				Test($"test1.png");
+            uint c1 = Utils.MakePixel(255, 100, 0, 0);
+            uint c2 = Utils.MakePixel(255, 255, 255, 255);
 
-			Console.WriteLine("Mean time: " + sw.ElapsedMilliseconds / n);
+			var a = Utils.CalcAlphaByte(85, 85);
+			var b = Utils.CalcAlphaByte(150, 150);
+
+			uint res = Utils.BlendPreMul(c1, c2);
+            //uint res1 = Utils.BlendTest(res, Utils.MakePixel(255, 255, 255, 255));
+
+            Test($"test1.png");
 		}
 
 		private static void Test(string name)
@@ -90,26 +96,30 @@ namespace TextCaptchaGenerator
 
 
             // noise
-            GaussNoise effect = new GaussNoise(100) { Monochrome = false };
-            //PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f };
-            layer1.Effects.Add(effect);
+            //GaussNoise effect = new GaussNoise(255) { Monochrome = false };
+            //PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f, Monochrome = false };
 
-			//PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
-			//layer2.Effects.Add(effect);
-			//PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular) { Antialiasing = true };
-			//layer2.Effects.Add(effect2);
 
-			image.DrawAll();
-			// image to png
-			//using (var res = image.DrawAll())
-			//{
-			//	using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
-			//	using (var stream = File.OpenWrite(Path.Combine(dataPath, name)))
-			//	{
-			//		data.SaveTo(stream);
-			//	}
-			//}
-		}
+            // glitch
+            RGBShift effect = new RGBShift(3);
+            layer2.Effects.Add(effect);
+
+            //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
+            //layer2.Effects.Add(effect);
+            //PolarCoordinates effect2 = new PolarCoordinates(PolarCoordinates.ePolarType.PolarToRectangular) { Antialiasing = true };
+            //layer2.Effects.Add(effect2);
+
+
+            // image to png
+            using (var res = image.DrawAll())
+            {
+                using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
+                using (var stream = File.OpenWrite(Path.Combine(dataPath, name)))
+                {
+                    data.SaveTo(stream);
+                }
+            }
+        }
 
 		private static void TestBlending()
         {

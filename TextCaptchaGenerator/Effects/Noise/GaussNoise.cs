@@ -18,18 +18,15 @@ namespace TextCaptchaGenerator.Effects.Noise
             get => _amount;
             set
             {
-                _amount = 1-(value % 256 / 256f);
+                _amount = 1-(value % 256 / 255f);
             }
         }
 
         public bool Monochrome { get; set; } = false;
 
-        public GaussNoise()
-        {
-        }
 
-        // public range 0 - 256
-        public GaussNoise(byte amount)
+        // public range 0 - 255
+        public GaussNoise(byte amount = 255)
         {
             Amount = amount;
         }
@@ -75,8 +72,10 @@ namespace TextCaptchaGenerator.Effects.Noise
 
                         if (Monochrome)
                         {
-                            color = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
-                            buffer[y, x] = Utils.MultiplyFloatToPixel(Utils.MakePixel(color, color, color, 255), colorSrc);
+                            //color = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
+                            buffer[y, x] = Utils.MultiplyFloatToPixelWithoutAlpha(
+                                GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal), 
+                                colorSrc);
                         }
                         else
                         {
@@ -84,7 +83,7 @@ namespace TextCaptchaGenerator.Effects.Noise
                             g = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
                             b = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
 
-                            buffer[y, x] = Utils.MultiplyFloatToPixel(Utils.MakePixel(r, g, b, 255), colorSrc);
+                            buffer[y, x] = Utils.MultiplyPixelToPixel(Utils.MakePixel(255, r, g, b), colorSrc);
                         }
                     }
                 }

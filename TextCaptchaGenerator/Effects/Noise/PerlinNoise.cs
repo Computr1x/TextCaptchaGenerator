@@ -69,10 +69,10 @@ namespace TextCaptchaGenerator.Effects.Noise
                         //buffer[y, x] = ConvertTotalToRgb((int) (MathF.Round(noise * 255 / Step) * Step));
 
                         color = Monochrome ? 
-                            Utils.MakePixel(noise, noise, noise, 255) :
+                            Utils.MakePixel(255, noise, noise, noise) :
                             HSVtoRGB(noise / 255f, 1.0f, 1.0f, 1.0f);
 
-                        buffer[y, x] = Utils.MultiplyFloatToPixel(color, colorSrc);
+                        buffer[y, x] = Utils.MultiplyPixelToPixel(color, colorSrc);
                     }
                 }
 
@@ -95,7 +95,7 @@ namespace TextCaptchaGenerator.Effects.Noise
             if (hue > 0.999f) { hue = 0.999f; }
             if (hue < 0.001f) { hue = 0.001f; }
             if (saturation > 0.999f) { saturation = 0.999f; }
-            if (saturation < 0.001f) { return Utils.MakePixel((byte)(value * 255), (byte)(value * 255), (byte)(value * 255), (byte)(alpha * 255)); }
+            if (saturation < 0.001f) { return Utils.MakePixel((byte)(alpha * 255), (byte)(value * 255), (byte)(value * 255), (byte)(value * 255)); }
             if (value > 0.999f) { value = 0.999f; }
             if (value < 0.001f) { value = 0.001f; }
 
@@ -109,17 +109,17 @@ namespace TextCaptchaGenerator.Effects.Noise
             switch (ihue)
             {
                 case 0:
-                    return Utils.MakePixel((byte)(value * 255), (byte)(t * 255), (byte)(p * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(value * 255), (byte)(t * 255), (byte)(p * 255));
                 case 1:
-                    return Utils.MakePixel((byte)(q * 255), (byte)(value * 255), (byte)(p * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(q * 255), (byte)(value * 255), (byte)(p * 255));
                 case 2:
-                    return Utils.MakePixel((byte)(p * 255), (byte)(value * 255), (byte)(t * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(p * 255), (byte)(value * 255), (byte)(t * 255));
                 case 3:
-                    return Utils.MakePixel((byte)(p * 255), (byte)(q * 255), (byte)(value * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(p * 255), (byte)(q * 255), (byte)(value * 255));
                 case 4:
-                    return Utils.MakePixel((byte)(t * 255), (byte)(p * 255), (byte)(value * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(t * 255), (byte)(p * 255), (byte)(value * 255));
                 default:
-                    return Utils.MakePixel((byte)(value * 255), (byte)(p * 255), (byte)(q * 255), (byte)(alpha * 255));
+                    return Utils.MakePixel((byte)(alpha * 255), (byte)(value * 255), (byte)(p * 255), (byte)(q * 255));
             }
         }
 
