@@ -27,12 +27,12 @@ namespace TextCaptchaGenerator.Effects.Transform
                 float sinA = MathF.Sin(degrees), cosA = MathF.Cos(degrees), centerX = width / 2f, centerY = height / 2f, offsetX = 0, offsetY = 0;
                 float fromCenterX = 0, fromCenterY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    fromCenterX = x - centerX;
-                    for (int y = 0; y < height; y++)
+                    fromCenterY = y - centerY;
+                    for (int x = 0; x < width; x++)
                     {
-                        fromCenterY = y - centerY;
+                        fromCenterX = x - centerX;
 
                         offsetX = cosA * fromCenterX + sinA * fromCenterY + centerX;
                         offsetY = -sinA * fromCenterX + cosA * fromCenterY + centerY;

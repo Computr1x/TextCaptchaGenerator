@@ -44,16 +44,16 @@ namespace TextCaptchaGenerator.Effects.Distort
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
                 float offsetX = 0, offsetY = 0, v = 0, offset = 0, offset1 = 0, offset2 = 0;
 
-                
+
                 for (int y = 0; y < height; y++)
                 {
-                    v = y / (float) height;
+                    v = y / (float)height;
 
                     offset1 = MathF.Sin((v + 0.5f) * Mix(3f, 12f, UpDown(t1))) * 15;
                     offset2 = MathF.Sin((v + 0.5f) * Mix(3f, 12f, UpDown(t2))) * 15;
                     offset = offset1 + offset2;
 
-                    offsetY = y * height / (float) height + offset;
+                    offsetY = y * height / (float)height + offset;
                     offsetY = Math.Max(0, Math.Min(height - 1, offsetY));
 
                     for (int x = 0; x < width; x++)

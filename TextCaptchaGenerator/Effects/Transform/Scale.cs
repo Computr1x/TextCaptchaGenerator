@@ -33,12 +33,12 @@ namespace TextCaptchaGenerator.Effects.Transform
 
                 int newWidth = (int)MathF.Round(width * sx), newHeight = (int)MathF.Round(height * sy);
 
-                for (int i = 0; i < newWidth; i++)
+                for (int j = 0; j < newHeight; j++)
                 {
-                    x = (int)(i / sx);
-                    for (int j = 0; j < newHeight; j++)
+                    y = (int)(j / sy);
+                    for (int i = 0; i < newWidth; i++)
                     {
-                        y = (int)(j / sy);
+                        x = (int)(i / sx);
 
                         if (i >= 0 && i < width && j >= 0 && j < height)
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref x, ref y,

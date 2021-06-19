@@ -12,7 +12,7 @@ namespace TextCaptchaGenerator.Effects.Distort
         public int X { get; set; }
         public int Y { get; set; }
         // radius of effect in pixels
-        public float Radius { get; } =  100f;
+        public float Radius { get; } = 100f;
         //  wavelength of ripples, in pixels
         public float WaveLength { get; } = 10f;
         // approximate width of wave train, in wavelengths
@@ -83,9 +83,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                 int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         CalculateRipple(ref x, ref y,
                                 ref centerX, ref centerY,

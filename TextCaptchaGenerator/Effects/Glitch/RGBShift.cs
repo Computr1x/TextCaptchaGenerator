@@ -44,7 +44,7 @@ namespace TextCaptchaGenerator.Effects.Glitch
         public void Draw(SKBitmap bitmap)
         {
             unsafe void RGBShiftMethod(uint* pSrc, ref int x, ref int y, ref int curXOffset, ref int curYOffset, ref int xOffset, ref int yOffset, 
-                ref int width, ref int height, ref uint sourceColor, ref uint targetColor, ref uint resColor, eResChannel resChannel)
+                ref int width, ref int height, ref uint sourceColor, ref uint resColor, eResChannel resChannel)
             {
                 curXOffset = x + xOffset;
                 curYOffset = y + yOffset;
@@ -59,7 +59,6 @@ namespace TextCaptchaGenerator.Effects.Glitch
                     curYOffset += height;
 
                 sourceColor = *(pSrc + (curYOffset * width + curXOffset));
-                targetColor = *(pSrc + (y * width + x));
 
                 switch (resChannel)
                 {
@@ -86,8 +85,7 @@ namespace TextCaptchaGenerator.Effects.Glitch
             unsafe
             {
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
-                uint r = 0, g = 0, b = 0;
-                uint targetColor = 0, sourceColor = 0;
+                uint r = 0, g = 0, b = 0, sourceColor = 0;
                 int curXOffset = 0, curYOffset = 0;
 
                 //eResChannel resChannel = eResChannel.Blue;
@@ -101,13 +99,13 @@ namespace TextCaptchaGenerator.Effects.Glitch
 
                         // red shift
                         RGBShiftMethod(pSrc, ref x, ref y, ref curXOffset, ref curYOffset, ref redXOffset, ref redYOffset, 
-                            ref width, ref height, ref sourceColor, ref targetColor, ref r, eResChannel.Red);
+                            ref width, ref height, ref sourceColor, ref r, eResChannel.Red);
                         // green shift
                         RGBShiftMethod(pSrc, ref x, ref y, ref curXOffset, ref curYOffset, ref greenXOffset, ref greenYOffset,
-                            ref width, ref height, ref sourceColor, ref targetColor, ref g, eResChannel.Green);
+                            ref width, ref height, ref sourceColor, ref g, eResChannel.Green);
                         // blue shift
                         RGBShiftMethod(pSrc, ref x, ref y, ref curXOffset, ref curYOffset, ref blueXOffset, ref blueYOffset,
-                            ref width, ref height, ref sourceColor, ref targetColor, ref b, eResChannel.Blue);
+                            ref width, ref height, ref sourceColor, ref b, eResChannel.Blue);
 
                         buffer[y, x] = (r | g | b);
                     }

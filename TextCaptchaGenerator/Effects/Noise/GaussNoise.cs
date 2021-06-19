@@ -12,6 +12,7 @@ namespace TextCaptchaGenerator.Effects.Noise
     {
         // internal range 0 - 1
         private float _amount = 100f / 400f;
+        private Random _rand;
         // public range 0 - 255
         public float Amount
         {
@@ -26,8 +27,9 @@ namespace TextCaptchaGenerator.Effects.Noise
 
 
         // public range 0 - 255
-        public GaussNoise(byte amount = 255)
+        public GaussNoise(int seed = 0, byte amount = 255)
         {
+            _rand = new Random(seed);
             Amount = amount;
         }
 
@@ -57,16 +59,15 @@ namespace TextCaptchaGenerator.Effects.Noise
             {
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
 
-                Random rand = new Random();
+                uint colorSrc;
                 float u1 = 0, u2 = 0, randStdNormal = 0;
+                byte r = 0, g = 0, b = 0;
 
-
-                byte color = 0, r = 0, g = 0, b = 0;
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
-                        uint colorSrc = *(pSrc + (y * width + x));
+                        colorSrc = *(pSrc + (y * width + x));
                         if (colorSrc >> 24 == 0)
                             continue;
 
@@ -74,14 +75,14 @@ namespace TextCaptchaGenerator.Effects.Noise
                         {
                             //color = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
                             buffer[y, x] = Utils.MultiplyFloatToPixelWithoutAlpha(
-                                GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal), 
+                                GetNextGaussian(_rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal), 
                                 colorSrc);
                         }
                         else
                         {
-                            r = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
-                            g = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
-                            b = (byte)(GetNextGaussian(rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
+                            r = (byte)(GetNextGaussian(_rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
+                            g = (byte)(GetNextGaussian(_rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
+                            b = (byte)(GetNextGaussian(_rand, ref mean, ref stdDev, ref u1, ref u2, ref randStdNormal) * 255);
 
                             buffer[y, x] = Utils.MultiplyPixelToPixel(Utils.MakePixel(255, r, g, b), colorSrc);
                         }

@@ -81,7 +81,8 @@ namespace TextCaptchaGenerator.Effects.Distort
                 pixelX = 0, pixelY = 0, pixelDistance = 0, pixelAngle = 0, twistAngle = 0, swirlAmount = 0,
                 offsetX = 0, offsetY = 0;
 
-                if (customCoords) {
+                if (customCoords)
+                {
                     swirlX = X;
                     swirlY = Y;
                 }
@@ -90,9 +91,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                 int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         CalculateSwirl(ref x, ref y, ref pixelX, ref pixelY, ref pixelDistance,
                             ref pixelAngle, ref twistAngle, ref swirlAmount,

@@ -1,9 +1,5 @@
 ﻿using SkiaSharp;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TextCaptchaGenerator.BaseObjects;
 
 namespace TextCaptchaGenerator.Effects.Distort
@@ -55,7 +51,7 @@ namespace TextCaptchaGenerator.Effects.Distort
 
 
             void CalculateWave(ref int x, ref int y,
-                ref float pixelX, ref float pixelY, 
+                ref float pixelX, ref float pixelY,
                 ref float xOffset, ref float yOffset,
                 ref WaveDeleagate calcWave)
             {
@@ -75,7 +71,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             {
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
                 float pixelX = 0, pixelY = 0, offsetX = 0, offsetY = 0;
-                
+
                 WaveDeleagate calcWave = WaveType switch
                 {
                     eWaveType.Sine => SineWave,
@@ -87,9 +83,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                 int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         CalculateWave(ref x, ref y, ref pixelX, ref pixelY, ref offsetX, ref offsetY, ref calcWave);
 

@@ -50,16 +50,16 @@ namespace TextCaptchaGenerator.Effects.Distort
             {
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
                 float pixelX = 0, pixelY = 0, offsetX = 0, offsetY = 0, pixelDistance = 0, pixelAngle = 0;
-                int r = (int) Radius;
+                int r = (int)Radius;
 
                 float d = 0, interpolationFactor = 0;
                 // wave with antialiasing
                 float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                 int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         d = MathF.Sqrt(MathF.Pow(x - X, 2f) + MathF.Pow(y - Y, 2f));
                         if (d <= r)
@@ -83,7 +83,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                     }
                 }
 
-                    fixed (uint* newPtr = buffer)
+                fixed (uint* newPtr = buffer)
                 {
                     bitmap.SetPixels((IntPtr)newPtr);
                 }

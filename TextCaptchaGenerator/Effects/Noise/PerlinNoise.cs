@@ -57,9 +57,9 @@ namespace TextCaptchaGenerator.Effects.Noise
                 byte noise = 0;
                 uint color = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         uint colorSrc = *(pSrc + (y * width + x));
                         if (colorSrc >> 24 == 0)

@@ -10,7 +10,7 @@ namespace TextCaptchaGenerator.Effects.Distort
 
         public eConversionType PolarType { get; } = eConversionType.RectangularToPolar;
         public bool Antialiasing { get; set; } = true;
-        
+
         public PolarCoordinates() { }
 
         public PolarCoordinates(eConversionType polarType)
@@ -47,7 +47,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             }
 
             int width = bitmap.Width;
-            int height = bitmap.Height;     
+            int height = bitmap.Height;
 
             IntPtr pixelsAddr = bitmap.GetPixels();
             uint[,] buffer = new uint[height, width];
@@ -56,7 +56,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             {
                 // maxRadius = MathF.Min(width, height) / 2f, MathF.Sqrt(width * width + height * height) / 4f
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
-                float centerX = width / 2f, centerY = height / 2f, 
+                float centerX = width / 2f, centerY = height / 2f,
                     pixelX = 0, pixelY = 0, offsetX = 0, offsetY = 0,
                     maxRadius = MathF.Sqrt(width * width + height * height) / 4f,
                     scaleX = width / maxRadius, scaleY = height / (2f * MathF.PI);
@@ -70,9 +70,9 @@ namespace TextCaptchaGenerator.Effects.Distort
                 float fractionX = 0, fractionY = 0, oneMinusX = 0, oneMinusY = 0;
                 int ceilX = 0, ceilY = 0, floorX = 0, floorY = 0;
 
-                for (int x = 0; x < width; x++)
+                for (int y = 0; y < height; y++)
                 {
-                    for (int y = 0; y < height; y++)
+                    for (int x = 0; x < width; x++)
                     {
                         calcPolar(ref x, ref y, ref scaleX, ref scaleY, ref centerX, ref centerY,
                             ref pixelX, ref pixelY, ref offsetX, ref offsetY);
