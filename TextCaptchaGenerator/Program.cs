@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.Effects;
+using TextCaptchaGenerator.Effects.Color;
 using TextCaptchaGenerator.Effects.Distort;
 using TextCaptchaGenerator.Effects.Glitch;
 using TextCaptchaGenerator.Effects.Noise;
@@ -103,7 +104,14 @@ namespace TextCaptchaGenerator
 			// glitch
 			//RGBShift effect = new RGBShift(3);
 			//Pixelate effect = new Pixelate(10, 4);
-			Slices effect = new Slices() { Count = 10, SliceHeight = 10 };
+			//Slices effect = new Slices() { Count = 10, SliceHeight = 10 };
+			//Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
+
+
+
+			// color
+			//GrayScale effect = new GrayScale();
+			HSBCorrection effect = new HSBCorrection(0, 55, 55);
             layer2.Effects.Add(effect);
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
