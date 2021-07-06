@@ -39,8 +39,8 @@ namespace TextCaptchaGenerator.Effects.Color
 
         public void Draw(SKBitmap bitmap)
         {
-            //if (Hue == 0 && Saturation == 0 && Brightness == 0)
-            //    return;
+            if (Hue == 0 && Saturation == 0 && Brightness == 0)
+                return;
 
             int width = bitmap.Width;
             int height = bitmap.Height;
@@ -53,10 +53,11 @@ namespace TextCaptchaGenerator.Effects.Color
                 uint* pSrc = (uint*)pixelsAddr.ToPointer();
 
                 uint curColorRGB = 0;
-                byte a, r, g, b;
-                float rF, gF, bF, h, s, v;
+                byte a, r, g, b, h, s, v;
+                // addititonal fields for ref optimization
+                byte rgbMin = 0, rgbMax = 0, region = 0, remainder = 0, p = 0, q = 0, t = 0;
+                int tempVal = 0;
 
-                float tempVal = 0, hueF = Hue / 255f, satF = Saturation / 255f, briF = Brightness / 255f;
                 for (int y = 0; y < height; y++)
                 {
                     for (int x = 0; x < width; x++)
@@ -66,22 +67,16 @@ namespace TextCaptchaGenerator.Effects.Color
                         if (a == 0)
                             continue;
 
-                        rF = r / 255f;
-                        gF = g / 255f;
-                        bF = b / 255f;
-                        ColorsConverter.RgbToHsb(rF, gF, bF, out h, out s, out v);
+                        ColorsConverter.RgbToHsb(r, g, b, ref rgbMin, ref rgbMax, out h, out s, out v);
 
-                        tempVal = h + hueF;
-                        h = tempVal > 1f ? 1f : tempVal;
-                        tempVal = s + satF;
-                        s = tempVal > 1f ? 1f : tempVal;
-                        tempVal = v + briF;
-                        v = tempVal > 1f ? 1f : tempVal;
+                        tempVal = h + Hue;
+                        h = tempVal > 255 ? 255 : (byte)tempVal;
+                        tempVal = s + Saturation;
+                        s = tempVal > 255 ? 255 : (byte)tempVal;
+                        tempVal = v + Brightness;
+                        v = tempVal > 255 ? 255 : (byte)tempVal;
 
-                        ColorsConverter.HsbToRgb(h, s, v, out rF, out gF, out bF);
-                        r = (byte)(rF * 255);
-                        g = (byte)(gF * 255);
-                        b = (byte)(bF * 255);
+                        ColorsConverter.HsbToRgb(h, s, v, ref region, ref remainder, ref p, ref q, ref t, out r, out g, out b);
 
                         buffer[y, x] = Utils.MakePixel(a, r, g, b);
                     }

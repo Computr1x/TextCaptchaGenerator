@@ -57,9 +57,12 @@ namespace TextCaptchaGenerator
 					Style = SKPaintStyle.Fill,
 					StrokeWidth = 4
 				});
+			DImage dImage = new DImage(200, 50, Path.Combine(dataPath,"img.png"));
 
 			layer1.Drawables.Add(dEllipse);
 			layer1.Drawables.Add(dText);
+			layer1.Drawables.Add(dImage);
+
 			image.Layers.Add(layer1);
 
 			// layer2
@@ -81,38 +84,40 @@ namespace TextCaptchaGenerator
 			layer2.Drawables.Add(dPolygon);
 			image.Layers.Add(layer2);
 
-			// distort
-			//Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
-			//Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
-			//Bulge effect = new Bulge(64, 64, 100, -1);
-			//Ripple effect = new Ripple(50, 50);
-			//SlitScan effect = new SlitScan();
+            // distort
+            //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
+            //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
+            //Bulge effect = new Bulge(64, 64, 100, -1);
+            //Ripple effect = new Ripple(50, 50);
+            //SlitScan effect = new SlitScan();
 
-			// transform
-			//Scale effect = new Scale(1f, 0.9f);
-			//Shift effect = new Shift(0, 100);
-			//Flip effect = new Flip(Flip.eFlipType.Both);
-			//Rotate effect = new Rotate(45);
-			//Skew effect = new Skew(30, 0, 0, 30);
-
-
-			// noise
-			//GaussNoise effect = new GaussNoise(255) { Monochrome = false };
-			//PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f, Monochrome = false };
+            // transform
+            //Scale effect = new Scale(1f, 0.9f);
+            //Shift effect = new Shift(0, 100);
+            //Flip effect = new Flip(Flip.eFlipType.Both);
+            //Rotate effect = new Rotate(45);
+            //Skew effect = new Skew(30, 0, 0, 30);
 
 
-			// glitch
-			//RGBShift effect = new RGBShift(3);
-			//Pixelate effect = new Pixelate(10, 4);
-			//Slices effect = new Slices() { Count = 10, SliceHeight = 10 };
-			//Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
+            // noise
+            //GaussNoise effect = new GaussNoise(255) { Monochrome = false };
+            //PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f, Monochrome = false };
+
+
+            // glitch
+            //RGBShift effect = new RGBShift(3);
+            //Pixelate effect = new Pixelate(10, 4);
+            //Slices effect = new Slices() { Count = 10, SliceHeight = 10 };
+            //Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
+            FSDithering effect = new FSDithering() { GrayScale = false };
+            layer1.Effects.Add(effect);
 
 
 
-			// color
-			//GrayScale effect = new GrayScale();
-			HSBCorrection effect = new HSBCorrection(0, 55, 55);
-            layer2.Effects.Add(effect);
+            // color
+            //GrayScale effect = new GrayScale();
+            //HSBCorrection effect = new HSBCorrection(0, 5, 5);
+
 
             //PolarCoordinates effect = new PolarCoordinates() { Antialiasing = true };
             //layer2.Effects.Add(effect);

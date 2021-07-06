@@ -10,7 +10,6 @@ namespace TextCaptchaGenerator.Effects.Color
 {
     public class GrayScale : IEffect
     {
-
         public void Draw(SKBitmap bitmap)
         {
             int width = bitmap.Width;
