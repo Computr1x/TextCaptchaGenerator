@@ -42,12 +42,12 @@ namespace TextCaptchaGenerator.Effects.Glitch
         public void Draw(SKBitmap bitmap)
         {
             // normal distance
-            float GetDistance(in byte r1, in byte g1, in byte b1, in byte r2, in byte g2, in byte b2)
-            {
-                // sqrt delete for optimization
-                // MathF.Sqrt(MathF.Pow((float)(r2 - r1), 2f) + MathF.Pow((float)(g2 - g1), 2f) + MathF.Pow((float)(b2 - b1), 2f));
-                return MathF.Pow((r2 - r1), 2f) + MathF.Pow((g2 - g1), 2f) + MathF.Pow((b2 - b1), 2f);
-            }
+            // float GetDistance(in byte r1, in byte g1, in byte b1, in byte r2, in byte g2, in byte b2)
+            // {
+            //     // sqrt delete for optimization
+            //     // MathF.Sqrt(MathF.Pow((float)(r2 - r1), 2f) + MathF.Pow((float)(g2 - g1), 2f) + MathF.Pow((float)(b2 - b1), 2f));
+            //     return MathF.Pow((r2 - r1), 2f) + MathF.Pow((g2 - g1), 2f) + MathF.Pow((b2 - b1), 2f);
+            // }
 
             // weighted distance since eyes are most sensitive to green, and least sensitive to blue
             float GetWeightedDistance(in byte r1, in byte g1, in byte b1, in byte r2, in byte g2, in byte b2)
@@ -82,7 +82,7 @@ namespace TextCaptchaGenerator.Effects.Glitch
             //}
             byte ClipF(float value)
             {
-                return value > 255 ? 255 : (byte)value;
+                return (byte) (value > 255 ? 255 : value);
             }
 
             if (GrayScale)
@@ -120,7 +120,7 @@ namespace TextCaptchaGenerator.Effects.Glitch
                                 curColorRGB = buffer[y, x];
                                 a = (byte)(curColorRGB >> 24);
                                 gray = (byte)(curColorRGB & 0xff);
-                                newGray = gray > 128 ? 255 : 0;
+                                newGray = (byte)(gray > 128 ? 255 : 0);
 
                                 buffer[y, x] = Utils.MakePixel(a, newGray, newGray, newGray);
 
@@ -163,7 +163,7 @@ namespace TextCaptchaGenerator.Effects.Glitch
                             for (int x = 1; x < width - 1; x++)
                             {
                                 curColorRGB = buffer[y, x];
-                                ColorsConverter.UintToArgb(curColorRGB, out a, out r, out g, out b);
+                                ColorUtils.UintToArgb(curColorRGB, out a, out r, out g, out b);
 
                                 FindClosestPaleteColor(r, g, b, out r2, out g2, out b2);
                                 buffer[y, x] = Utils.MakePixel(a, r2, g2, b2);
@@ -174,16 +174,16 @@ namespace TextCaptchaGenerator.Effects.Glitch
                                 bE = (byte)Math.Abs(b - b2);
 
                                 // y, x + 1
-                                ColorsConverter.UintToArgb(buffer[y, x + 1], out a, out r, out g, out b);
+                                ColorUtils.UintToArgb(buffer[y, x + 1], out a, out r, out g, out b);
                                 buffer[y, x + 1] = Utils.MakePixel(a, ClipF(r + rE * 7f / 16f), ClipF(g + gE * 7f / 16f), ClipF(b + bE * 7f / 16f));
                                 // y + 1, x - 1
-                                ColorsConverter.UintToArgb(buffer[y + 1, x - 1], out a, out r, out g, out b);
+                                ColorUtils.UintToArgb(buffer[y + 1, x - 1], out a, out r, out g, out b);
                                 buffer[y + 1, x - 1] = Utils.MakePixel(a, ClipF(r + rE * 3f / 16f), ClipF(g + gE * 3f / 16f), ClipF(b + bE * 3f / 16f));
                                 // y  + 1, x
-                                ColorsConverter.UintToArgb(buffer[y + 1, x], out a, out r, out g, out b);
+                                ColorUtils.UintToArgb(buffer[y + 1, x], out a, out r, out g, out b);
                                 buffer[y + 1, x] = Utils.MakePixel(a, ClipF(r + rE * 5f / 16f), ClipF(g + gE * 5f / 16f), ClipF(b + bE * 5f / 16f));
                                 // y + 1, x + 1
-                                ColorsConverter.UintToArgb(buffer[y + 1, x + 1], out a, out r, out g, out b);
+                                ColorUtils.UintToArgb(buffer[y + 1, x + 1], out a, out r, out g, out b);
                                 buffer[y + 1, x + 1] = Utils.MakePixel(a, ClipF(r + rE * 1f / 16f), ClipF(g + gE * 1f / 16f), ClipF(b + bE * 1f / 16f));
                             }
                         }

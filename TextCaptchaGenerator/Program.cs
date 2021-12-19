@@ -10,6 +10,7 @@ using TextCaptchaGenerator.Effects.Distort;
 using TextCaptchaGenerator.Effects.Glitch;
 using TextCaptchaGenerator.Effects.Noise;
 using TextCaptchaGenerator.Effects.Transform;
+using TextCaptchaGenerator.Effects.Convolutional;
 using TextCaptchaGenerator.Hierarchy;
 
 namespace TextCaptchaGenerator
@@ -20,7 +21,7 @@ namespace TextCaptchaGenerator
 
 		private static string CreateDataPath()
         {
-			string path = Path.GetFullPath("..\\..\\..\\data");
+			string path = Path.GetFullPath(".\\data");
 
 			if (!Directory.Exists(path))
 				Directory.CreateDirectory(path);
@@ -68,7 +69,17 @@ namespace TextCaptchaGenerator
 			// layer2
 			Layer layer2 = new Layer(image.info, SKColors.Transparent);
 			// objects
-			DRectangle dRect = new DRectangle(new SKRect(200, 225, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
+			DRectangle dRect = new DRectangle(
+				new SKRect(200, 225, 55, 55), 
+				new SKPaint() { 
+					// Color = new SKColor(0xd0428522), 
+					IsAntialias = true,
+					Shader =  SKShader.CreateLinearGradient(
+					new SKPoint(200, 255), 
+					new SKPoint(55,55), 
+					new SKColor[]{SKColors.AliceBlue, SKColors.Green},
+					SKShaderTileMode.Clamp)
+					});
 			DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
 			DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(512, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
 			DLine dLine3 = new DLine(new SKPoint(1, 1), new SKPoint(1, 512), new SKPaint() { Color = SKColors.Brown, IsAntialias = true, StrokeWidth = 2 });
@@ -100,17 +111,27 @@ namespace TextCaptchaGenerator
 
 
             // noise
-            //GaussNoise effect = new GaussNoise(255) { Monochrome = false };
+            // GaussNoise effect = new GaussNoise(255) { Monochrome = true };
             //PerlinNoise effect = new PerlinNoise() { Octaves = 10, Step = 5, Persistence = 0.5f, Monochrome = false };
 
 
             // glitch
-            //RGBShift effect = new RGBShift(3);
+            // RGBShift effect = new RGBShift(3);
             //Pixelate effect = new Pixelate(10, 4);
-            //Slices effect = new Slices() { Count = 10, SliceHeight = 10 };
-            //Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
-            FSDithering effect = new FSDithering() { GrayScale = false };
-            layer1.Effects.Add(effect);
+            // Slices effect2 = new Slices() { Count = 10, SliceHeight = 10 };
+            // Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
+			// layer2.Effects.Add(effect);
+			EdgeDetection effect = new EdgeDetection(
+				new float[,]{
+					{0, -1, 0},
+					{-1, 5, -1},
+					{0, -1, 0}
+				}
+			);
+			layer2.Effects.Add(effect);
+			// TODO Fix dithering
+            // FSDithering effect = new FSDithering() { GrayScale = true };
+            // layer2.Effects.Add(effect);
 
 
 
@@ -162,6 +183,7 @@ namespace TextCaptchaGenerator
 				Layer layer2 = new Layer(image.info, blendMode, SKColors.Transparent);
 				DRectangle dRect = new DRectangle(new SKRect(200, 200, 55, 55), new SKPaint() { Color = new SKColor(0xd0428522), IsAntialias = true });
 				DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
+
 
 				layer2.Drawables.Add(dRect);
 				layer2.Drawables.Add(dLine);

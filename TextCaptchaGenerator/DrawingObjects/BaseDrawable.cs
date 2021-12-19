@@ -9,12 +9,20 @@ namespace TextCaptchaGenerator.DrawingObjects
         public SKPaint Paint { get; set; }
 
         public List<IEffect> Effects { get; }
+        
 
         public BaseDrawable(SKPaint paint)
         {
             Paint = paint;
             Effects = new List<IEffect>();
         }
+
+        // public BaseDrawable(SKPaint paint, SKShader shader)
+        // {
+        //     paint.Shader = shader;
+        //     Paint = paint;
+        //     Effects = new List<IEffect>();
+        // }
 
         public abstract void Draw(SKCanvas canvas);
     }

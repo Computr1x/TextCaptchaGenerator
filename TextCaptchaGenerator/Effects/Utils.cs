@@ -346,8 +346,6 @@ namespace TextCaptchaGenerator.Effects
                 (byte)((src >> 8 & 0xff) * (dst >> 8 & 0xff) / 255),
                 (byte)((src & 0xff) * (dst & 0xff) / 255));
         }
-
-
         #endregion
 
 

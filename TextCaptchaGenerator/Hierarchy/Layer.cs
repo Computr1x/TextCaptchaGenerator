@@ -19,7 +19,7 @@ namespace TextCaptchaGenerator.Hierarchy
         public List<IEffect> Effects { get; }
         public SKCanvas Canvas { get; }
 
-        // TO DO
+        // TODO
         // add opacity
 
         

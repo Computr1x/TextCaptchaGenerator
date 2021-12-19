@@ -18,6 +18,7 @@ namespace TextCaptchaGenerator.Effects.Distort
             Amplitude = amplitude;
         }
 
+
         public Wave(float waveLength, float amplitude, eWaveType waveType) : this(waveLength, amplitude)
         {
             WaveType = waveType;

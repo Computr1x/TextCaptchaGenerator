@@ -63,18 +63,18 @@ namespace TextCaptchaGenerator.Effects.Color
                     for (int x = 0; x < width; x++)
                     {
                         curColorRGB = *(pSrc + y * width + x);
-                        ColorsConverter.UintToArgb(curColorRGB, out a, out r, out g, out b);
+                        ColorUtils.UintToArgb(curColorRGB, out a, out r, out g, out b);
                         if (a == 0)
                             continue;
 
                         ColorsConverter.RgbToHsb(r, g, b, ref rgbMin, ref rgbMax, out h, out s, out v);
 
                         tempVal = h + Hue;
-                        h = tempVal > 255 ? 255 : (byte)tempVal;
+                        h = (byte)(tempVal > 255 ? 255 : tempVal);
                         tempVal = s + Saturation;
-                        s = tempVal > 255 ? 255 : (byte)tempVal;
+                        s = (byte)(tempVal > 255 ? 255 : tempVal);
                         tempVal = v + Brightness;
-                        v = tempVal > 255 ? 255 : (byte)tempVal;
+                        v = (byte)(tempVal > 255 ? 255 : tempVal);
 
                         ColorsConverter.HsbToRgb(h, s, v, ref region, ref remainder, ref p, ref q, ref t, out r, out g, out b);
 

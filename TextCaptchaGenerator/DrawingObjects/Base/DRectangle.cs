@@ -16,9 +16,9 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
             Rect = rect;
         }
 
-        public DRectangle(float xOffset, float yOffset, float width, float height, SKPaint paint) : base(paint)
+        public DRectangle(float xOffset, float yOffset, float width, float height, SKPaint paint) 
+        : this(new SKRect(xOffset, yOffset, xOffset + width, yOffset + height), paint)
         {
-            Rect = new SKRect(xOffset, yOffset, xOffset + width, yOffset + height);
         }
 
         public override void Draw(SKCanvas canvas)
