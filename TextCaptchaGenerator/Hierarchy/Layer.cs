@@ -19,7 +19,7 @@ namespace TextCaptchaGenerator.Hierarchy
         public List<IEffect> Effects { get; }
         public SKCanvas Canvas { get; }
 
-        // TODO
+        // TO DO
         // add opacity
 
         
@@ -51,15 +51,15 @@ namespace TextCaptchaGenerator.Hierarchy
                 }
                 else
                 {
-                    var tempBitMap = new SKBitmap(imageInfo);
-                    var tempCanvas = new SKCanvas(bitmap);
+                    SKBitmap tempBitMap = new(imageInfo);
+                    SKCanvas tempCanvas = new(bitmap);
                     
                     drawable.Draw(tempCanvas);
                     
                     foreach(var effect in drawable.Effects)
                         effect.Draw(tempBitMap);
 
-                    using (SKPaint paint = new SKPaint())
+                    using (SKPaint paint = new())
                     {
                         paint.BlendMode = BlendMode;
                         Canvas.DrawBitmap(tempBitMap, new SKPoint(0,0), paint);
