@@ -11,7 +11,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/TextCaptchaGenerator/bin/Debug/net5.0/TextCaptchaGenerator.dll",
+            "program": "${workspaceFolder}/TextCaptchaGenerator/bin/Debug/net6.0/TextCaptchaGenerator.dll",
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,

@@ -13,23 +13,11 @@
                 "/consoleloggerparameters:NoSummary"
             ],
             "group": {
-                "kind": "build",
+                "kind": "test",
                 "isDefault": true
             },
             "presentation": {
                 "reveal": "silent"
-            },
-            "problemMatcher": "$msCompile"
-        },
-        {
-            "label": "run",
-            "command": "dotnet",
-            "type": "shell",
-            "args": [
-                "run"
-            ],
-            "presentation": {
-                "reveal": "always"
             },
             "problemMatcher": "$msCompile"
         }

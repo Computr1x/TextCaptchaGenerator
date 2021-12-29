@@ -4,6 +4,11 @@ using System.IO;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.Effects;
 using TextCaptchaGenerator.Hierarchy;
+using TextCaptchaGenerator.Effects.Convolutional;
+using TextCaptchaGenerator.Effects.Distort;
+using TextCaptchaGenerator.Effects.Glitch;
+using TextCaptchaGenerator.Effects.Noise;
+using TextCaptchaGenerator.Effects.Color;
 
 namespace TextCaptchaGenerator
 {
@@ -13,7 +18,7 @@ namespace TextCaptchaGenerator
 
         private static string CreateDataPath()
         {
-            string path = Path.GetFullPath(".\\data");
+            string path = Path.GetFullPath("./TextCaptchaGenerator/.data");
 
             if (!Directory.Exists(path))
                 Directory.CreateDirectory(path);
@@ -23,16 +28,19 @@ namespace TextCaptchaGenerator
 
         static void Main(string[] args)
         {
-            uint c1 = Utils.MakePixel(255, 100, 0, 0);
-            uint c2 = Utils.MakePixel(255, 255, 255, 255);
+            // uint c1 = Utils.MakePixel(255, 100, 0, 0);
+            // uint c2 = Utils.MakePixel(255, 255, 255, 255);
 
-            var a = Utils.CalcAlphaByte(85, 85);
-            var b = Utils.CalcAlphaByte(150, 150);
+            // var a = Utils.CalcAlphaByte(85, 85);
+            // var b = Utils.CalcAlphaByte(150, 150);
 
-            uint res = Utils.BlendPreMul(c1, c2);
+            // uint res = Utils.BlendPreMul(c1, c2);
             //uint res1 = Utils.BlendTest(res, Utils.MakePixel(255, 255, 255, 255));
+            
+            // TestBlending();
 
-            Test($"test1.png");
+            //Test($"test1.png");
+            Console.WriteLine("Done");
         }
 
         private static void Test(string name)
@@ -50,11 +58,10 @@ namespace TextCaptchaGenerator
                     Style = SKPaintStyle.Fill,
                     StrokeWidth = 4
                 });
-            DImage dImage = new DImage(200, 50, Path.Combine(dataPath, "img.png"));
 
             layer1.Drawables.Add(dEllipse);
             layer1.Drawables.Add(dText);
-            layer1.Drawables.Add(dImage);
+            // layer1.Drawables.Add(dImage);   
 
             image.Layers.Add(layer1);
 
@@ -79,6 +86,8 @@ namespace TextCaptchaGenerator
             DLine dLine4 = new DLine(new SKPoint(511, 1), new SKPoint(511, 255), new SKPaint() { Color = SKColors.Blue, IsAntialias = true, StrokeWidth = 3 });
             DPolygon dPolygon = new DPolygon(new SKPoint[] { new SKPoint(350, 5), new SKPoint(350, 250), new SKPoint(450, 175) },
                 new SKPaint() { Color = SKColors.Yellow, IsAntialias = true, StrokeWidth = 3, Style = SKPaintStyle.StrokeAndFill });
+            DImage dImage = new DImage(200, 50, Path.Combine(dataPath, "img.png"));
+
 
             layer2.Drawables.Add(dRect);
             layer2.Drawables.Add(dLine);
@@ -86,14 +95,15 @@ namespace TextCaptchaGenerator
             layer2.Drawables.Add(dLine3);
             layer2.Drawables.Add(dLine4);
             layer2.Drawables.Add(dPolygon);
+            layer2.Drawables.Add(dImage);
             image.Layers.Add(layer2);
 
             // distort
             //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
             //Wave effect = new Wave(35, 6, Wave.eWaveType.Sine) { Antialiasing = true };
-            //Bulge effect = new Bulge(64, 64, 100, -1);
-            //Ripple effect = new Ripple(50, 50);
-            //SlitScan effect = new SlitScan();
+            // Bulge effect = new Bulge(64, 64, 100, -1);
+            // Ripple effect = new Ripple(30, 30);
+            // SlitScan effect = new SlitScan();
 
             // transform
             //Scale effect = new Scale(1f, 0.9f);
@@ -109,24 +119,24 @@ namespace TextCaptchaGenerator
 
 
             // glitch
-            // RGBShift effect = new RGBShift(3);
+            RGBShift effect = new RGBShift(3);
             //Pixelate effect = new Pixelate(10, 4);
             // Slices effect2 = new Slices() { Count = 10, SliceHeight = 10 };
             // Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
             // layer2.Effects.Add(effect);
 
-            //EdgeDetection effect = new EdgeDetection(
-            //	new float[,]{
-            //		{1f/9f, 1f/9f, 1f/9f},
-            //		{1f/9f, 1f/9f, 1f/9f},
-            //		{1f/9f, 1f/9f, 1f/9f}
-            //	}
-            //);
-            layer2.Effects.Add(effect);
+            // EdgeDetection effect = new EdgeDetection(
+            // 	new float[,]{
+            // 		{1f/9f, 1f/9f, 1f/9f},
+            // 		{1f/9f, 1f/9f, 1f/9f},
+            // 		{1f/9f, 1f/9f, 1f/9f}
+            // 	}
+            // );
+            // layer2.Effects.Add(effect);
 
             // TODO Fix dithering
             // FSDithering effect = new FSDithering() { GrayScale = true };
-            // layer2.Effects.Add(effect);
+            layer2.Effects.Add(effect);
 
 
 
@@ -156,7 +166,7 @@ namespace TextCaptchaGenerator
         {
             foreach (SKBlendMode blendMode in Enum.GetValues(typeof(SKBlendMode)))
             {
-                Image image = new Image(256, 256);
+                Image image = new Image(512, 256);
 
                 // layer1 
                 Layer layer1 = new Layer(image.info, blendMode, SKColors.White);
