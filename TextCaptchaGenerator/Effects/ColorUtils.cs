@@ -106,7 +106,6 @@ public static class ColorUtils {
         return UintToFColor(byte.MaxValue, rgb);
     }
 
-
     public static uint ArgbToUint(in byte a, in byte r, in byte g, in byte b)
     {
         return (uint)(a << 24 | r << 16 | g << 8 | b);

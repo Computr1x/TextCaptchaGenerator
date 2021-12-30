@@ -1,8 +1,0 @@
-﻿Random:
-	generate rnd value by seed
-
-Layers:
-	opacity
-
-FIX:
-	dithering

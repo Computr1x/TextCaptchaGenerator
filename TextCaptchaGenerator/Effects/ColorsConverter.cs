@@ -184,7 +184,16 @@ namespace TextCaptchaGenerator.Effects
 			return;
 		}
 
-		public static RGBColor HsbToColor(in float h, in float s, in float v)
+		public static RGBColor HsbFToRGBColor(in float h, in float s, in float v)
+		{
+			//Debug.WriteLine("{0}, {1}, {2}", h, s, v);
+
+			HsbFToRgb(h, s, v, out var r, out var g, out var b);
+
+			return ColorUtils.RgbToColor(r, g, b);
+		}
+
+		public static RGBColor HsbToRgbUint(in float h, in float s, in float v)
 		{
 			//Debug.WriteLine("{0}, {1}, {2}", h, s, v);
 
@@ -207,7 +216,7 @@ namespace TextCaptchaGenerator.Effects
 
 		public static RGBColor CriticalPercentageToColor(in float value, in float min, in float max, in float s, in float b)
 		{
-			return HsbToColor(min + value * (max - min), s, b);
+			return HsbFToRGBColor(min + value * (max - min), s, b);
 		}
 		
 

@@ -1,0 +1,17 @@
+﻿Random:
+	☐ generate rnd value by seed
+	☐ rnd text
+	☐ 
+
+Layers:
+	☐ opacity
+
+FIX:
+	☐ dithering
+	☐ edge detection
+
+
+notes
+1) rnd values pass to constructor
+2) rnd values on constructor or execute drawning?
+3) pass rnd value or rnd range

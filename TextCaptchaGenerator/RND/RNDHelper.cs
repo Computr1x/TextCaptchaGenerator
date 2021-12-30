@@ -9,6 +9,11 @@ namespace TextCaptchaGenerator.RND {
         private Random rnd;
         public int Seed { get; private set;}
 
+        public record RNDIntRange(int low, int high);
+        // public record RNDSymbolsRange(char[] symbols);
+        // public record RNDRectRange(float x, float y, float width, float height);
+        // public record RNDRectRange(float x, float y, float width, float height);
+
         public RNDHelper(int seed){
             Seed = seed;
             ResetRandom();
@@ -16,6 +21,11 @@ namespace TextCaptchaGenerator.RND {
 
         public void ResetRandom(){
             rnd = new Random(Seed);
+        }
+
+        public void ResetRandom(int seed){
+            Seed = seed;
+            ResetRandom();
         }
 
         public float NextFloat(float minValue, float maxValue){
@@ -58,8 +68,10 @@ namespace TextCaptchaGenerator.RND {
         }
 
         
-        public SKPaint NextSKFontPaint(string fontFamily = "Arial", int fontSize = 24, SKColor? color = null){
+        public SKPaint NextSKFontPaint(string fontFamily = "Arial", RNDIntRange fontSizeRange = null, SKColor? color = null){
             color ??= SKColors.Black;
+            fontSizeRange ??= new(24, 30);
+
             var paint = new SKPaint();
             paint.TextSize = fontSize;
             paint.Color = color.Value;
@@ -72,16 +84,17 @@ namespace TextCaptchaGenerator.RND {
             return paint;
         }
 
-        public SKPaint NextRandomSKFontPaint(int fontSize = 24, SKColor? color = null){
+        public SKPaint NextRandomSKFontPaint(RNDIntRange fontSizeRange = null, SKColor? color = null){
             if(fontList == null)
                 InitListFonts();
             string fontName = fontList[rnd.Next(0, fontList.Length)];
             return NextSKFontPaint(fontName, fontSize, color);
         }
 
-        private static string[] fontList;
-        public void InitListFonts(){
-            fontList = SKFontManager.CreateDefault().GetFontFamilies();
+        
+
+        public static NextText(){
+
         }
     }
 }
