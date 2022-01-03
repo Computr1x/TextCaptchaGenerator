@@ -3,7 +3,7 @@ using TextCaptchaGenerator.BaseObjects;
 
 public static class ColorUtils {
 
-    #region Get channel of color
+    # region Get channel of color
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public static uint GetAlphaChannel(in uint sourceColor){
         return (sourceColor & 0xff000000) >> 24;
@@ -43,7 +43,29 @@ public static class ColorUtils {
     public static float GetBlueFChannel(in uint sourceColor){
         return GetBlueChannel(sourceColor) / 255f;
     }
-    #endregion
+    # endregion
+
+    # region set color by channel
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint SetAlphaChannel(ref uint sourceColor, in byte alpha){
+        return (sourceColor & 0x00FFFFFF | (uint)(alpha << 24));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint SetRedChannel(ref uint sourceColor, in byte red){
+        return (sourceColor & 0xFF00FFFF | (uint)(red << 16));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint SetGreenChannel(ref uint sourceColor, in byte green){
+        return (sourceColor & 0xFFFF00FF | (uint)(green << 8));
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public static uint SetBlueChannel(ref uint sourceColor, in byte blue){
+        return (sourceColor & 0xFFFFFF00 | (uint)(blue));
+    }
+    # endregion
 
     # region fromColorConverter
     public static RGBColor RgbToColor(in float a, in float r, in float g, in float b)

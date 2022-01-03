@@ -18,16 +18,13 @@ namespace TextCaptchaGenerator.Hierarchy
         public List<BaseDrawable> Drawables { get; }
         public List<IEffect> Effects { get; }
         public SKCanvas Canvas { get; }
-
-        // TO DO
-        // add opacity
-
+        public byte Opacity {get;}
         
-        public Layer(SKImageInfo imageInfo) : this(imageInfo, SKBlendMode.SrcOver, SKColors.Transparent) { }
+        public Layer(SKImageInfo imageInfo, byte opacity = 255) : this(imageInfo, SKBlendMode.SrcOver, SKColors.Transparent, opacity) { }
 
-        public Layer(SKImageInfo imageInfo, SKColor background) : this(imageInfo, SKBlendMode.SrcOver, background) { }
+        public Layer(SKImageInfo imageInfo, SKColor background, byte opacity = 255) : this(imageInfo, SKBlendMode.SrcOver, background, opacity) { }
 
-        public Layer(SKImageInfo imageInfo, SKBlendMode blendMode, SKColor background)
+        public Layer(SKImageInfo imageInfo, SKBlendMode blendMode, SKColor background, byte opacity = 255)
         {
             this.imageInfo = imageInfo;
             bitmap = new SKBitmap(imageInfo);
@@ -36,6 +33,7 @@ namespace TextCaptchaGenerator.Hierarchy
             Drawables = new List<BaseDrawable>();
             Effects = new List<IEffect>();
             BlendMode = blendMode;
+            Opacity = opacity;
         }
 
         public SKBitmap DrawAll()
@@ -47,6 +45,9 @@ namespace TextCaptchaGenerator.Hierarchy
             {
                 if (drawable.Effects == null || drawable.Effects.Count == 0)
                 {
+                    if(drawable.Paint is null)
+                        drawable.Paint = new SKPaint();
+                    drawable.Paint.Color = drawable.Paint.Color.WithAlpha(Opacity);
                     drawable.Draw(Canvas);
                 }
                 else
@@ -61,6 +62,7 @@ namespace TextCaptchaGenerator.Hierarchy
 
                     using (SKPaint paint = new())
                     {
+                        paint.Color = paint.Color.WithAlpha(Opacity);
                         paint.BlendMode = BlendMode;
                         Canvas.DrawBitmap(tempBitMap, new SKPoint(0,0), paint);
                     }

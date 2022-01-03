@@ -1,10 +1,10 @@
 ﻿Random:
 	☐ generate rnd value by seed
-	☐ rnd text
+	✔ rnd text @done(22-01-03 12:42)
 	☐ 
 
 Layers:
-	☐ opacity
+	✔ opacity @done(22-01-03 12:42)
 
 FIX:
 	☐ dithering

@@ -39,7 +39,7 @@ namespace TextCaptchaGenerator
             
             // TestBlending();
 
-            //Test($"test1.png");
+            Test($"test2.png");
             Console.WriteLine("Done");
         }
 
@@ -66,7 +66,7 @@ namespace TextCaptchaGenerator
             image.Layers.Add(layer1);
 
             // layer2
-            Layer layer2 = new Layer(image.info, SKColors.Transparent);
+            Layer layer2 = new Layer(image.info, SKColors.Transparent, 200);
             // objects
             DRectangle dRect = new DRectangle(
                 new SKRect(200, 225, 55, 55),
@@ -119,7 +119,7 @@ namespace TextCaptchaGenerator
 
 
             // glitch
-            RGBShift effect = new RGBShift(3);
+            // RGBShift effect = new RGBShift(3);
             //Pixelate effect = new Pixelate(10, 4);
             // Slices effect2 = new Slices() { Count = 10, SliceHeight = 10 };
             // Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
@@ -136,7 +136,7 @@ namespace TextCaptchaGenerator
 
             // TODO Fix dithering
             // FSDithering effect = new FSDithering() { GrayScale = true };
-            layer2.Effects.Add(effect);
+            // layer2.Effects.Add(effect);
 
 
 
