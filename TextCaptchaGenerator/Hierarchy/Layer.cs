@@ -12,6 +12,7 @@ namespace TextCaptchaGenerator.Hierarchy
     public class Layer
     {
         protected SKImageInfo imageInfo;
+        protected SKRect imageRect;
         private SKBitmap bitmap;
 
         public SKBlendMode BlendMode { get; }
@@ -34,6 +35,7 @@ namespace TextCaptchaGenerator.Hierarchy
             Effects = new List<IEffect>();
             BlendMode = blendMode;
             Opacity = opacity;
+            imageRect = imageInfo.Rect;
         }
 
         public SKBitmap DrawAll()

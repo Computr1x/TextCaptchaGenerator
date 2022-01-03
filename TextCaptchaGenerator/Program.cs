@@ -1,7 +1,9 @@
 ﻿using SkiaSharp;
 using System;
 using System.IO;
+using System.Collections.Generic;
 using TextCaptchaGenerator.DrawingObjects.Base;
+using TextCaptchaGenerator.DrawingObjects;
 using TextCaptchaGenerator.Effects;
 using TextCaptchaGenerator.Hierarchy;
 using TextCaptchaGenerator.Effects.Convolutional;
@@ -9,6 +11,8 @@ using TextCaptchaGenerator.Effects.Distort;
 using TextCaptchaGenerator.Effects.Glitch;
 using TextCaptchaGenerator.Effects.Noise;
 using TextCaptchaGenerator.Effects.Color;
+using TextCaptchaGenerator.RND;
+using TextCaptchaGenerator.RND.Layers;
 
 namespace TextCaptchaGenerator
 {
@@ -49,9 +53,12 @@ namespace TextCaptchaGenerator
 
             // layer1 
             Layer layer1 = new Layer(image.info, SKColors.White);
-            DEllipse dEllipse = new DEllipse(new SKPoint(15, 15), 40, new SKPaint() { Color = new SKColor(0xff4285F4), IsAntialias = true });
-            DText dText = new DText(new SKPoint(128, 128), "Igor kek", new SKFont(),
-                new SKPaint
+            DEllipse dEllipse = new DEllipse(
+                new SKPoint(15, 15), 40, 
+                new SKPaint() { Color = new SKColor(0xff4285F4), IsAntialias = true });
+            DText dText = new DText(new SKPoint(128, 128), 
+                "Igor kek",
+                new SKPaint()
                 {
                     Color = new SKColor(0xff4285F4),
                     IsAntialias = true,
@@ -88,15 +95,15 @@ namespace TextCaptchaGenerator
                 new SKPaint() { Color = SKColors.Yellow, IsAntialias = true, StrokeWidth = 3, Style = SKPaintStyle.StrokeAndFill });
             DImage dImage = new DImage(200, 50, Path.Combine(dataPath, "img.png"));
 
-
-            layer2.Drawables.Add(dRect);
-            layer2.Drawables.Add(dLine);
-            layer2.Drawables.Add(dLine2);
-            layer2.Drawables.Add(dLine3);
-            layer2.Drawables.Add(dLine4);
-            layer2.Drawables.Add(dPolygon);
-            layer2.Drawables.Add(dImage);
+            layer2.Drawables.AddRange(new List<BaseDrawable>(){
+                dRect, dLine, dLine2, dLine3, dLine4, dPolygon, dImage
+            });
             image.Layers.Add(layer2);
+
+
+            RNDManager mgr = new RNDManager(0);
+            Layer layer3 = new RNDObjectsLayer(mgr, image.info, 200);
+            image.Layers.Add(layer3);
 
             // distort
             //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
@@ -171,7 +178,8 @@ namespace TextCaptchaGenerator
                 // layer1 
                 Layer layer1 = new Layer(image.info, blendMode, SKColors.White);
                 DEllipse dEllipse = new DEllipse(new SKPoint(15, 15), 40, new SKPaint() { Color = new SKColor(0xff4285F4), IsAntialias = true });
-                DText dText = new DText(new SKPoint(128, 128), "Igor kek", new SKFont(),
+
+                DText dText = new DText(new SKPoint(128, 128), "Igor kek", 
                     new SKPaint
                     {
                         Color = new SKColor(0xff4285F4),

@@ -43,6 +43,10 @@ namespace TextCaptchaGenerator.RND{
             return rnd.NextSingle();
         }
 
+        public float NextFloat(float max){
+            return rnd.NextSingle();
+        }
+
         public int NextInt(RNDBasicRange<int> range){
             return rnd.Next(range.Min, range.Max);
         }
@@ -62,15 +66,23 @@ namespace TextCaptchaGenerator.RND{
 
         public SKPoint NextSkPoint(RNDRectangle rect){
             return new SKPoint(
-                NextFloat(new(rect.Left, rect.Right)),
-                NextFloat(new(rect.Top, rect.Bottom)));
+                NextFloat(new RNDBasicRange<float>(rect.Left, rect.Right)),
+                NextFloat(new RNDBasicRange<float>(rect.Top, rect.Bottom)));
         }
 
-        public SKPoint NextSkPoint(RNDCircle circle){
+        public SKPoint NextSKPoint(RNDCircle circle){
             return new SKPoint(
                 circle.X + circle.Radius * MathF.Sqrt(rnd.NextSingle()),
                 circle.Y + circle.Radius * MathF.Sqrt(rnd.NextSingle())
             );
+        }
+
+        public SKSize NextSKSize(RNDBasicRange<float> widthRange, RNDBasicRange<float> hightRange){
+            return new SKSize(NextFloat(widthRange), NextFloat(hightRange));
+        }
+
+        public SKSize NextSKSize(float width, float height){
+            return new SKSize(width, height);
         }
 
         public SKColor NextSKColor(byte alpha = 255){
@@ -89,7 +101,7 @@ namespace TextCaptchaGenerator.RND{
         RNDColorRange colorRange = null){
             colorRange ??= new(3);
             fontSizeRange ??= new(24, 30);
-            fontFamilyRange ??= new(new[]{"Arial"});
+            fontFamilyRange ??= new();
 
             SKColor color = colorRange.Colors[NextInt(colorRange.Colors.Length)];
             int fontSize = NextInt(fontSizeRange);

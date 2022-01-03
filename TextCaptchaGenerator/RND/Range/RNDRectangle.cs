@@ -1,4 +1,5 @@
 using System;
+using SkiaSharp;
 
 namespace TextCaptchaGenerator.RND.Range{
     public class RNDRectangle {
@@ -14,5 +15,10 @@ namespace TextCaptchaGenerator.RND.Range{
             Right = right;
             Bottom = bottom;
         }
+
+        public static explicit operator RNDRectangle(SKRect rect) => 
+            new(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        public static explicit operator RNDRectangle(SKRectI rect) => 
+            new(rect.Left, rect.Top, rect.Right, rect.Bottom);
     }
 }
