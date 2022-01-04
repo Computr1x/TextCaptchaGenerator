@@ -1,25 +1,28 @@
 ﻿Random:
 	☐ generate rnd value by seed
 	✔ rnd text @done(22-01-03 12:42)
-	☐ 
 
 Drawable objects:
+	☐ curve line
 	☐ pattern
+	☐ background text 
 
 Effects:
 	☐ Fill
+	☐ dead pixel
 
 Text:
-	☐ load fonts
+	☐ load fonts SkTypeface.FromFile
 	☐ font pack for captcha
-	☐ centering text
+	✔ pre defined words @done(22-01-04 14:52)
+	✔ centering text (calculate center based on drawing area and font size) @done(22-01-04 14:52)
 
 Layers:
-	✔ opacity @done(22-01-03 12:42)
 	☐ noise layer
 	☐ text layer
+	✔ opacity @done(22-01-03 12:42)
 
 FIX:
-	✔ font problems @done(22-01-04 09:48)
 	☐ dithering
 	☐ edge detection
+	✔ font problems @done(22-01-04 09:48)

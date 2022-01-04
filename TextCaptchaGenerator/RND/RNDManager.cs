@@ -44,7 +44,7 @@ namespace TextCaptchaGenerator.RND{
         }
 
         public float NextFloat(float max){
-            return rnd.NextSingle();
+            return NextFloat(new RNDBasicRange<float>(0,max));
         }
 
         public int NextInt(RNDBasicRange<int> range){
@@ -132,13 +132,19 @@ namespace TextCaptchaGenerator.RND{
         }       
 
         public string NextText(RNDTextRange textRange){
-            int textLength = NextInt(textRange.TextLengthRange);
+            if(textRange.GenerateMode){
+                int textLength = NextInt(textRange.TextLengthRange);
 
-            StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < textLength; i++)
-                sb.Append(textRange.Chars[rnd.Next(0, textRange.Chars.Length)]);
+                StringBuilder sb = new StringBuilder();
+                for(int i = 0; i < textLength; i++)
+                    sb.Append(
+                        textRange.Chars[rnd.Next(0, textRange.Chars.Length)]);
 
-            return sb.ToString();
+                return sb.ToString();
+            }
+            else{
+                return textRange.Words[NextInt(textRange.Words.Length)];
+            }
         }
 
         public T NextEnum<T>(RNDEnumRange<T> enumRange) where T : struct {

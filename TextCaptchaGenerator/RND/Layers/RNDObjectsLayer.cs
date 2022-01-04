@@ -11,21 +11,22 @@ using TextCaptchaGenerator.BaseObjects.Enums;
 
 namespace TextCaptchaGenerator.RND.Layers {
     public class RNDObjectsLayer : Layer {
-        public RNDObjectsLayer(RNDManager manager, SKImageInfo info, 
-            byte opacity = 255, int objectsCount = 3)
+        public RNDObjectsLayer(SKImageInfo info, RNDManager manager, RNDObjectManager objectManager = null,
+          byte opacity = 255, int objectsCount = 3)
             : base(info, opacity: opacity){
             
             RNDRectangle rect = (RNDRectangle)info.Rect;
-            RNDObjectManager objManager = 
+            objectManager ??= 
                 new(rect, manager, 
                     new(new List<eDrawableType>(){
                         eDrawableType.Ellipse, 
                         eDrawableType.Line, 
                         eDrawableType.Polygon, 
                         eDrawableType.Rectangle, 
-                        eDrawableType.Text}));
+                        //eDrawableType.Text
+                        }));
 
-            Drawables.AddRange(objManager.GetRandomDrawable(objectsCount));
+            Drawables.AddRange(objectManager.GetRandomDrawable(objectsCount));
         }
     }
 }

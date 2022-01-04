@@ -100,10 +100,12 @@ namespace TextCaptchaGenerator
             });
             image.Layers.Add(layer2);
 
-
-            RNDManager mgr = new RNDManager(0);
-            Layer layer3 = new RNDObjectsLayer(mgr, image.info, 200, 5);
+            Layer layer3 = new Layer(image.info, SKColors.Transparent);
             image.Layers.Add(layer3);
+
+            // RNDManager mgr = new RNDManager(0);
+            // Layer layer3 = new RNDObjectsLayer(image.info, mgr, null, 200, 5);
+            // image.Layers.Add(layer3);
 
             // distort
             //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };

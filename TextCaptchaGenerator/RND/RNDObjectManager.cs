@@ -125,7 +125,10 @@ namespace TextCaptchaGenerator.RND{
                 mgr.NextFloat(RectanglePars.DrawingArea.Bottom),
                 mgr.NextFloat(RectanglePars.DrawingArea.Right / 2f),
                 mgr.NextFloat(RectanglePars.DrawingArea.Right / 2f),
-                mgr.NextSKPaint(RectanglePars.ColorRange, true, mgr.NextInt(RectanglePars.StrokeWidthRange)));
+                mgr.NextSKPaint(
+                    RectanglePars.ColorRange, 
+                    true, 
+                    mgr.NextInt(RectanglePars.StrokeWidthRange)));
             return rectangle;
         }
 
@@ -165,18 +168,28 @@ namespace TextCaptchaGenerator.RND{
                 new RNDColorRange(32),
                 true
             );
-                
-            DText text = new DText(
-                (TextPars.isCenetered ? 
-                new SKPoint(rect.Right / 2f, rect.Bottom / 2f) :
-                mgr.NextSkPoint(rect)),
-                mgr.NextText(TextPars.TextRange), 
-                mgr.NextSKFontPaint(
+
+            SKPoint point;
+
+            var paint = mgr.NextSKFontPaint(
                     TextPars.FontFamilyRange,
                     TextPars.FontSizeRange,
-                    TextPars.ColorRange));
+                    TextPars.ColorRange);
+            string text = mgr.NextText(TextPars.TextRange);
+            if(TextPars.isCenetered){
+                float textLength = paint.MeasureText(text);
+                point = new SKPoint(rect.Right / 2f - textLength / 2f, rect.Bottom / 2f);
+            }
+            else{
+                point = mgr.NextSkPoint(TextPars.DrawingArea);
+            }
 
-            return text;
+            DText dtext = new DText(
+                point,
+                text, 
+                paint);
+
+            return dtext;
         }
     }
 }

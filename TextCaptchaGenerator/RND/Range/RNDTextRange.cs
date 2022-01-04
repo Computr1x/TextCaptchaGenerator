@@ -13,14 +13,25 @@ namespace TextCaptchaGenerator.RND.Range{
 
         public char[] Chars {get;set;}
         public RNDBasicRange<int> TextLengthRange {get;set;}
+
+        public bool GenerateMode {get;}
+
+        public string[] Words {get;set;}
         public RNDTextRange(string chars, RNDBasicRange<int> textLengthRange){
             Chars = chars.ToArray().Distinct().ToArray();
             TextLengthRange = textLengthRange;
+            GenerateMode = true;
         }
 
         public RNDTextRange(char[] chars, RNDBasicRange<int> textLengthRange){
             Chars = chars.Distinct().ToArray();
             TextLengthRange = textLengthRange;
+            GenerateMode = true;
+        }
+
+        public RNDTextRange(string[] words){    
+            Words = words;
+            GenerateMode = false;
         }
     }
 }
