@@ -102,7 +102,7 @@ namespace TextCaptchaGenerator
 
 
             RNDManager mgr = new RNDManager(0);
-            Layer layer3 = new RNDObjectsLayer(mgr, image.info, 200);
+            Layer layer3 = new RNDObjectsLayer(mgr, image.info, 200, 5);
             image.Layers.Add(layer3);
 
             // distort

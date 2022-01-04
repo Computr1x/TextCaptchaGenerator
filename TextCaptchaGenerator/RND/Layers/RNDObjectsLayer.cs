@@ -16,7 +16,14 @@ namespace TextCaptchaGenerator.RND.Layers {
             : base(info, opacity: opacity){
             
             RNDRectangle rect = (RNDRectangle)info.Rect;
-            RNDObjectManager objManager = new(rect, manager);
+            RNDObjectManager objManager = 
+                new(rect, manager, 
+                    new(new List<eDrawableType>(){
+                        eDrawableType.Ellipse, 
+                        eDrawableType.Line, 
+                        eDrawableType.Polygon, 
+                        eDrawableType.Rectangle, 
+                        eDrawableType.Text}));
 
             Drawables.AddRange(objManager.GetRandomDrawable(objectsCount));
         }

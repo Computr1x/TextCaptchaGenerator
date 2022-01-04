@@ -3,16 +3,23 @@
 	✔ rnd text @done(22-01-03 12:42)
 	☐ 
 
+Drawable objects:
+	☐ pattern
+
+Effects:
+	☐ Fill
+
+Text:
+	☐ load fonts
+	☐ font pack for captcha
+	☐ centering text
+
 Layers:
 	✔ opacity @done(22-01-03 12:42)
+	☐ noise layer
+	☐ text layer
 
 FIX:
-	☐ font problems 
+	✔ font problems @done(22-01-04 09:48)
 	☐ dithering
 	☐ edge detection
-
-
-notes
-1) rnd values pass to constructor
-2) rnd values on constructor or execute drawning?
-3) pass rnd value or rnd range

@@ -10,7 +10,16 @@ namespace TextCaptchaGenerator.RND.Range{
         public string[] FontFamilies {get;private set;}
 
         private static void InitListFonts(){
-            allFonts = SKFontManager.CreateDefault().GetFontFamilies();
+            SKFontManager fm = SKFontManager.CreateDefault();
+            var allFontsList = fm.GetFontFamilies().Distinct().ToList();
+            for(int i = 0; i < allFontsList.Count; i++){
+                SKTypeface typeface = SKTypeface.FromFamilyName(
+                    allFontsList[i]);
+                
+                if(!typeface.ContainsGlyph(RNDTextRange.asciiLetters[0]))
+                    allFontsList.RemoveAt(i--);
+            }
+            allFonts = allFontsList.ToArray();
             allFontsSet = new HashSet<string>(allFonts.Select(x => x.ToLower()));
         }
 

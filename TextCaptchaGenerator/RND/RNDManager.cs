@@ -77,6 +77,10 @@ namespace TextCaptchaGenerator.RND{
             );
         }
 
+        public SKSize NextSKSize(RNDSizeRange<float> sizeRange){
+            return NextSKSize(sizeRange.widthRange, sizeRange.heightRange);
+        }
+
         public SKSize NextSKSize(RNDBasicRange<float> widthRange, RNDBasicRange<float> hightRange){
             return new SKSize(NextFloat(widthRange), NextFloat(hightRange));
         }
@@ -105,23 +109,21 @@ namespace TextCaptchaGenerator.RND{
 
             SKColor color = colorRange.Colors[NextInt(colorRange.Colors.Length)];
             int fontSize = NextInt(fontSizeRange);
-            string fontFamily = fontFamilyRange.FontFamilies[NextInt(fontFamilyRange.FontFamilies.Length)];
+            string fontFamily = fontFamilyRange.FontFamilies[
+                NextInt(fontFamilyRange.FontFamilies.Length)];
 
             var paint = new SKPaint();
             paint.TextSize = fontSize;
             paint.Color = color;
             paint.Typeface = SKTypeface.FromFamilyName(
-                fontFamily, 
-                SKFontStyleWeight.Normal, 
-                SKFontStyleWidth.Normal, 
-                SKFontStyleSlant.Italic);
+                fontFamily);
 
             return paint;
         }
 
         public SKPaint NextSKPaint(RNDColorRange colorRange = null,
             bool isAntialias = true, 
-            int strokeWidth = 2){
+            int strokeWidth = 2) {
                 SKColor color = NextSKColor();
 
                 return new SKPaint() { Color=color, 
@@ -133,7 +135,7 @@ namespace TextCaptchaGenerator.RND{
             int textLength = NextInt(textRange.TextLengthRange);
 
             StringBuilder sb = new StringBuilder();
-            for(int i = 0; i < textRange.Chars.Length; i++)
+            for(int i = 0; i < textLength; i++)
                 sb.Append(textRange.Chars[rnd.Next(0, textRange.Chars.Length)]);
 
             return sb.ToString();
