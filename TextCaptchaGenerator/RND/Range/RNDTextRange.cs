@@ -3,13 +3,13 @@ using System.Linq;
 
 namespace TextCaptchaGenerator.RND.Range{
     public class RNDTextRange {
-        public static string punctuation = "!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~";
-        public static string asciiLowerCase = "abcdefghijklmnopqrstuvwxyz";
-        public static string asciiUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        public static string asciiLetters = asciiLowerCase + asciiUpperCase;
-        public static string digits = "0123456789";
-        public static string hexdigits = "0123456789abcdefABCDEF";
-        public static string octdigits = "01234567";
+        public static readonly string punctuation = "!\"#$%&'()*+, -./:;<=>?@[\\]^_`{|}~";
+        public static readonly string asciiLowerCase = "abcdefghijklmnopqrstuvwxyz";
+        public static readonly string asciiUpperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        public static readonly string asciiLetters = asciiLowerCase + asciiUpperCase;
+        public static readonly string digits = "0123456789";
+        public static readonly string hexDigits = "0123456789abcdefABCDEF";
+        public static readonly string octDigits = "01234567";
 
         public char[] Chars {get;set;}
         public RNDBasicRange<int> TextLengthRange {get;set;}

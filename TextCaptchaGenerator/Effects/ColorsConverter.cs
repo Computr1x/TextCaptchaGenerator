@@ -1,5 +1,4 @@
-﻿using SkiaSharp;
-using System;
+﻿using System;
 using TextCaptchaGenerator.BaseObjects;
 
 namespace TextCaptchaGenerator.Effects
@@ -117,29 +116,27 @@ namespace TextCaptchaGenerator.Effects
 
 			s = v == 0 ? 0 : delta / v;
 
-			if (s != 0)
+			if (s == 0) return;
+			// Determining hue sector
+			if (r == v)
 			{
-				// Determining hue sector
-				if (r == v)
-				{
-					h = (g - b) / delta;
-				}
-				else if (g == v)
-				{
-					h = 2 + (b - r) / delta;
-				}
-				else if (b == v)
-				{
-					h = 4 + (r - g) / delta;
-				}
-
-				// Sector to hue
-				h *= (1f / 6f);
-
-				// For cases like R = MAX & B > G
-				if (h < 0)
-					h += 1f;
+				h = (g - b) / delta;
 			}
+			else if (g == v)
+			{
+				h = 2 + (b - r) / delta;
+			}
+			else if (b == v)
+			{
+				h = 4 + (r - g) / delta;
+			}
+
+			// Sector to hue
+			h *= (1f / 6f);
+
+			// For cases like R = MAX & B > G
+			if (h < 0)
+				h += 1f;
 		}
 
 		/// <summary>Converts RGB color model values to HSB values without ref optimisation</summary>

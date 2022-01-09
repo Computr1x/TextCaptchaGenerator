@@ -32,8 +32,9 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
 
             var path = new SKPath { FillType = FillType };
             path.MoveTo(Points.First());
-            for (int i = 0; i < Points.Length; i++)
-                path.LineTo(Points[i]);
+            foreach (var t in Points)
+                path.LineTo(t);
+
             path.LineTo(Points.First());
             path.Close();
 

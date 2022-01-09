@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using SkiaSharp;
@@ -33,19 +32,11 @@ namespace TextCaptchaGenerator.RND.Range{
         }
 
         public RNDFontFamilyRange(IEnumerable<string> fontFamilies){
-            List<string> fonts = new();
-            foreach(string font in fontFamilies)
-                if(allFontsSet.Contains(font.ToLower()))
-                    fonts.Add(font);
-            FontFamilies = fonts.ToArray();
+            FontFamilies = fontFamilies.Where(font => allFontsSet.Contains(font.ToLower())).ToArray();
         }
 
         public RNDFontFamilyRange(string[] fontFamilies) {
-            List<string> fonts = new();
-            foreach(string font in fontFamilies)
-                if(allFontsSet.Contains(font.ToLower()))
-                    fonts.Add(font);
-            FontFamilies = fonts.ToArray();
+            FontFamilies = fontFamilies.Where(font => allFontsSet.Contains(font.ToLower())).ToArray();
         }
     }
 }

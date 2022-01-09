@@ -47,8 +47,7 @@ namespace TextCaptchaGenerator.Hierarchy
             {
                 if (drawable.Effects == null || drawable.Effects.Count == 0)
                 {
-                    if(drawable.Paint is null)
-                        drawable.Paint = new SKPaint();
+                    drawable.Paint ??= new SKPaint();
                     drawable.Paint.Color = drawable.Paint.Color.WithAlpha(Opacity);
                     drawable.Draw(Canvas);
                 }
@@ -62,12 +61,10 @@ namespace TextCaptchaGenerator.Hierarchy
                     foreach(var effect in drawable.Effects)
                         effect.Draw(tempBitMap);
 
-                    using (SKPaint paint = new())
-                    {
-                        paint.Color = paint.Color.WithAlpha(Opacity);
-                        paint.BlendMode = BlendMode;
-                        Canvas.DrawBitmap(tempBitMap, new SKPoint(0,0), paint);
-                    }
+                    using SKPaint paint = new();
+                    paint.Color = paint.Color.WithAlpha(Opacity);
+                    paint.BlendMode = BlendMode;
+                    Canvas.DrawBitmap(tempBitMap, new SKPoint(0,0), paint);
                 }
             }
 

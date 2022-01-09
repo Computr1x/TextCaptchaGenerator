@@ -30,7 +30,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                 return MathF.Sin(v) * 0.5f + 0.5f;
             }
 
-            float t1 = Time, t2 = t1 * 0.37f;
+            float t2 = Time * 0.37f;
 
 
             int width = bitmap.Width;
@@ -49,7 +49,7 @@ namespace TextCaptchaGenerator.Effects.Distort
                 {
                     v = y / (float)height;
 
-                    offset1 = MathF.Sin((v + 0.5f) * Mix(3f, 12f, UpDown(t1))) * 15;
+                    offset1 = MathF.Sin((v + 0.5f) * Mix(3f, 12f, UpDown(Time))) * 15;
                     offset2 = MathF.Sin((v + 0.5f) * Mix(3f, 12f, UpDown(t2))) * 15;
                     offset = offset1 + offset2;
 

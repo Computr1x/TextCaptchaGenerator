@@ -106,21 +106,15 @@ namespace TextCaptchaGenerator.Effects.Noise
             float q = value * (1f - (saturation * (h6 - ihue)));
             float t = value * (1f - (saturation * (1f - (h6 - ihue))));
 
-            switch (ihue)
+            return ihue switch
             {
-                case 0:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(value * 255), (byte)(t * 255), (byte)(p * 255));
-                case 1:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(q * 255), (byte)(value * 255), (byte)(p * 255));
-                case 2:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(p * 255), (byte)(value * 255), (byte)(t * 255));
-                case 3:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(p * 255), (byte)(q * 255), (byte)(value * 255));
-                case 4:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(t * 255), (byte)(p * 255), (byte)(value * 255));
-                default:
-                    return Utils.MakePixel((byte)(alpha * 255), (byte)(value * 255), (byte)(p * 255), (byte)(q * 255));
-            }
+                0 => Utils.MakePixel((byte) (alpha * 255), (byte) (value * 255), (byte) (t * 255), (byte) (p * 255)),
+                1 => Utils.MakePixel((byte) (alpha * 255), (byte) (q * 255), (byte) (value * 255), (byte) (p * 255)),
+                2 => Utils.MakePixel((byte) (alpha * 255), (byte) (p * 255), (byte) (value * 255), (byte) (t * 255)),
+                3 => Utils.MakePixel((byte) (alpha * 255), (byte) (p * 255), (byte) (q * 255), (byte) (value * 255)),
+                4 => Utils.MakePixel((byte) (alpha * 255), (byte) (t * 255), (byte) (p * 255), (byte) (value * 255)),
+                _ => Utils.MakePixel((byte) (alpha * 255), (byte) (value * 255), (byte) (p * 255), (byte) (q * 255))
+            };
         }
 
 
@@ -129,13 +123,13 @@ namespace TextCaptchaGenerator.Effects.Noise
             int v = permutationTable[(int)(((x * 1836311903) ^ (y * 2971215073) + 4807526976) & 1023)] & 3;
             //v = permutationTable[v] & 3;
 
-            switch (v)
+            return v switch
             {
-                case 0: return new Vector2D(1, 0);
-                case 1: return new Vector2D(-1, 0);
-                case 2: return new Vector2D(0, 1);
-                default: return new Vector2D(0, -1);
-            }
+                0 => new Vector2D(1, 0),
+                1 => new Vector2D(-1, 0),
+                2 => new Vector2D(0, 1),
+                _ => new Vector2D(0, -1)
+            };
         }
 
         static float QunticCurve(float t)

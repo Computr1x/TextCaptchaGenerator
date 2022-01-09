@@ -47,34 +47,29 @@ namespace TextCaptchaGenerator.Effects.Glitch
                             {
                                 curPixel = *(pSrc + yy * width + xx);
 
-                                if(curPixel >> 24 > 0)
-                                {
-                                    count++;
-                                    a += curPixel >> 24;
-                                    r += curPixel >> 16 & 0xff;
-                                    g += curPixel >> 8 & 0xff;
-                                    b += curPixel & 0xff;
-                                }
+                                if (curPixel >> 24 <= 0) continue;
+                                count++;
+                                a += curPixel >> 24;
+                                r += curPixel >> 16 & 0xff;
+                                g += curPixel >> 8 & 0xff;
+                                b += curPixel & 0xff;
                             }
                         }
 
-                        if(count > 0)
+                        if (count <= 0) continue;
+                        a /= count;
+                        r /= count;
+                        g /= count;
+                        b /= count;
+
+                        curPixel = Utils.MakePixel((byte)a, (byte)r, (byte)g, (byte)b);
+
+                        for(int i = y; i < curYLength; i++)
                         {
-                            a /= count;
-                            r /= count;
-                            g /= count;
-                            b /= count;
-
-                            curPixel = Utils.MakePixel((byte)a, (byte)r, (byte)g, (byte)b);
-
-                            for(int i = y; i < curYLength; i++)
+                            for (int j = x; j < curXLength; j++)
                             {
-                                for (int j = x; j < curXLength; j++)
-                                {
-                                    buffer[i, j] = curPixel;
-                                }
+                                buffer[i, j] = curPixel;
                             }
-                            
                         }
                     }
                 }

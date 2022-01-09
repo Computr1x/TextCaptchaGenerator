@@ -31,13 +31,11 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
             if (!fileExist)
                 throw new FileNotFoundException($"Image on path {Path} not found");
 
-            using(var fsStream = File.OpenRead(Path))
-            using (var stream = new SKManagedStream(fsStream))
-            using (var bitmap = SKBitmap.Decode(stream))
-            {
-                // draw the modified bitmap to the screen
-                canvas.DrawBitmap(bitmap, X, Y);
-            }
+            using var fsStream = File.OpenRead(Path);
+            using var stream = new SKManagedStream(fsStream);
+            using var bitmap = SKBitmap.Decode(stream);
+            // draw the modified bitmap to the screen
+            canvas.DrawBitmap(bitmap, X, Y);
         }
     }
 }

@@ -5,13 +5,13 @@ using TextCaptchaGenerator.BaseObjects;
 
 namespace TextCaptchaGenerator.Effects.Glitch
 {
-    public class Crystalyze : IEffect
+    public class Crystallize : IEffect
     {
-        private Random _r;
+        private readonly Random _r;
         public int CrystalsCount { get; set; } = 64;
 
 
-        public Crystalyze(int seed = 0)
+        public Crystallize(int seed = 0)
         {
             _r = new Random(seed);
         }
@@ -46,11 +46,9 @@ namespace TextCaptchaGenerator.Effects.Glitch
                         {
                             d = (y - yn[i]) * (y - yn[i]) + (x - xn[i]) * (x - xn[i]);
 
-                            if(d < dMin)
-                            {
-                                dMin = d;
-                                dIndex = i;
-                            }
+                            if (d >= dMin) continue;
+                            dMin = d;
+                            dIndex = i;
                         }
 
                         buffer[y, x] = *(pSrc + yn[dIndex] * width + xn[dIndex]);

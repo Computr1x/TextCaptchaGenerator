@@ -23,10 +23,12 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
 
             var path = new SKPath();
             path.MoveTo(Points.First());
-            for (int i = 0; i < Points.Length; i++)
-                path.LineTo(Points[i]);
-            path.Close();
-            path.
+            for (int i = 1; i < Points.Length; i++){
+                var p1 = Points[i-1];
+                var p2 = Points[i];
+                path.ArcTo(p1, p2, MathF.Sqrt(MathF.Pow(p2.X - p1.X, 2f)+MathF.Pow(p2.Y - p1.Y, 2f)));
+            }
+            // path.Close();
             canvas.DrawPath(path, Paint);
         }
     }

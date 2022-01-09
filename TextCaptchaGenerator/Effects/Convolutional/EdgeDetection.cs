@@ -36,7 +36,9 @@ namespace TextCaptchaGenerator.Effects.Convolutional
                     sum += kernel[i, j];
                 }
             }
-            if (sum > 1)
+
+            if (!(sum > 1)) return;
+            {
                 for (int i = 0; i < Dim; i++)
                 {
                     for (int j = 0; j < Dim; j++)
@@ -44,6 +46,7 @@ namespace TextCaptchaGenerator.Effects.Convolutional
                         kernel[i, j] /= sum;
                     }
                 }
+            }
         }
 
         public void Draw(SKBitmap bitmap)

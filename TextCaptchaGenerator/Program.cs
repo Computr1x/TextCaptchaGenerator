@@ -4,21 +4,13 @@ using System.IO;
 using System.Collections.Generic;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.DrawingObjects;
-using TextCaptchaGenerator.Effects;
 using TextCaptchaGenerator.Hierarchy;
-using TextCaptchaGenerator.Effects.Convolutional;
-using TextCaptchaGenerator.Effects.Distort;
-using TextCaptchaGenerator.Effects.Glitch;
-using TextCaptchaGenerator.Effects.Noise;
-using TextCaptchaGenerator.Effects.Color;
-using TextCaptchaGenerator.RND;
-using TextCaptchaGenerator.RND.Layers;
 
 namespace TextCaptchaGenerator
 {
     class Program
     {
-        private static string dataPath = CreateDataPath();
+        private static readonly string DataPath = CreateDataPath();
 
         private static string CreateDataPath()
         {
@@ -43,7 +35,7 @@ namespace TextCaptchaGenerator
             
             // TestBlending();
 
-            Test($"test2.png");
+            Test($"test1.png");
             Console.WriteLine("Done");
         }
 
@@ -84,16 +76,23 @@ namespace TextCaptchaGenerator
                     Shader = SKShader.CreateLinearGradient(
                     new SKPoint(200, 255),
                     new SKPoint(55, 55),
-                    new SKColor[] { SKColors.AliceBlue, SKColors.Green },
+                    new[] { SKColors.AliceBlue, SKColors.Green },
                     SKShaderTileMode.Clamp)
                 });
             DLine dLine = new DLine(new SKPoint(25, 65), new SKPoint(65, 25), new SKPaint() { Color = SKColors.IndianRed, IsAntialias = true, StrokeWidth = 12 });
             DLine dLine2 = new DLine(new SKPoint(5, 250), new SKPoint(512, 250), new SKPaint() { Color = SKColors.Purple, IsAntialias = true, StrokeWidth = 5 });
             DLine dLine3 = new DLine(new SKPoint(1, 1), new SKPoint(1, 512), new SKPaint() { Color = SKColors.Brown, IsAntialias = true, StrokeWidth = 2 });
             DLine dLine4 = new DLine(new SKPoint(511, 1), new SKPoint(511, 255), new SKPaint() { Color = SKColors.Blue, IsAntialias = true, StrokeWidth = 3 });
-            DPolygon dPolygon = new DPolygon(new SKPoint[] { new SKPoint(350, 5), new SKPoint(350, 250), new SKPoint(450, 175) },
-                new SKPaint() { Color = SKColors.Yellow, IsAntialias = true, StrokeWidth = 3, Style = SKPaintStyle.StrokeAndFill });
-            DImage dImage = new DImage(200, 50, Path.Combine(dataPath, "img.png"));
+            DPolygon dPolygon =
+                new DPolygon(new SKPoint[] {new SKPoint(350, 5), new SKPoint(350, 250), new SKPoint(450, 175)},
+                    new SKPaint()
+                        {
+                            Color = SKColors.Yellow,
+                            IsAntialias = true,
+                            StrokeWidth = 3,
+                            Style = SKPaintStyle.StrokeAndFill
+                        });
+            DImage dImage = new DImage(200, 50, Path.Combine(DataPath, "img.png"));
 
             layer2.Drawables.AddRange(new List<BaseDrawable>(){
                 dRect, dLine, dLine2, dLine3, dLine4, dPolygon, dImage
@@ -101,6 +100,16 @@ namespace TextCaptchaGenerator
             image.Layers.Add(layer2);
 
             Layer layer3 = new Layer(image.info, SKColors.Transparent);
+            DCurveLine dCurveLine = new DCurveLine(
+                new SKPoint[] { new(20,20), new(40,40), new(180, 100), new(200, 150), new(250,250)},
+                new SKPaint() { 
+                    Color = SKColors.MistyRose,
+                    StrokeWidth = 6,
+                    IsAntialias = true,
+                    Style = SKPaintStyle.Stroke
+                    }
+                );
+            layer3.Drawables.Add(dCurveLine);
             image.Layers.Add(layer3);
 
             // RNDManager mgr = new RNDManager(0);
@@ -131,7 +140,7 @@ namespace TextCaptchaGenerator
             // RGBShift effect = new RGBShift(3);
             //Pixelate effect = new Pixelate(10, 4);
             // Slices effect2 = new Slices() { Count = 10, SliceHeight = 10 };
-            // Crystalyze effect = new Crystalyze() { CrystalsCount = 512 };
+            // Crystallize effect = new Crystallize() { CrystalsCount = 512 };
             // layer2.Effects.Add(effect);
 
             // EdgeDetection effect = new EdgeDetection(
@@ -161,16 +170,13 @@ namespace TextCaptchaGenerator
 
 
             // image to png
-            using (var res = image.DrawAll())
-            {
-                using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
-                using (var stream = File.OpenWrite(Path.Combine(dataPath, name)))
-                {
-                    data.SaveTo(stream);
-                }
-            }
+            using var res = image.DrawAll();
+            using var data = res.Encode(SKEncodedImageFormat.Png, 100);
+            using var stream = File.OpenWrite(Path.Combine(DataPath, name));
+            data.SaveTo(stream);
         }
 
+/*
         private static void TestBlending()
         {
             foreach (SKBlendMode blendMode in Enum.GetValues(typeof(SKBlendMode)))
@@ -209,12 +215,13 @@ namespace TextCaptchaGenerator
                 using (var res = image.DrawAll())
                 {
                     using (var data = res.Encode(SKEncodedImageFormat.Png, 100))
-                    using (var stream = File.OpenWrite(Path.Combine(dataPath, blendMode.ToString() + ".png")))
+                    using (var stream = File.OpenWrite(Path.Combine(DataPath, blendMode.ToString() + ".png")))
                     {
                         data.SaveTo(stream);
                     }
                 }
             }
         }
+*/
     }
 }

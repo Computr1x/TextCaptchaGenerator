@@ -64,11 +64,9 @@ namespace TextCaptchaGenerator.Effects.Glitch
                 for (int i = 0; i < _palete.Length; i++)
                 {
                     curD = GetWeightedDistance(r1, g1, b1, _palete[i].R, _palete[i].G, _palete[i].B);
-                    if (curD < minD)
-                    {
-                        minD = curD;
-                        index = i;
-                    }
+                    if (!(curD < minD)) continue;
+                    minD = curD;
+                    index = i;
                 }
 
                 r2 = _palete[index].R;

@@ -12,9 +12,9 @@ using TextCaptchaGenerator.DrawingObjects.Base;
 
 namespace TextCaptchaGenerator.RND{
     public class RNDObjectManager {
-        private RNDManager mgr;
-        private RNDRectangle rect;
-        private RNDEnumRange<eDrawableType> allowedObjects;
+        private readonly RNDManager mgr;
+        private readonly RNDRectangle rect;
+        private readonly RNDEnumRange<eDrawableType> allowedObjects;
 
         public EllipseParsClass EllipsePars {get;set;}
         public LineParsClass LinePars {get;set;}

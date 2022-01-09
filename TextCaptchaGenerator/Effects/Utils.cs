@@ -147,18 +147,13 @@ namespace TextCaptchaGenerator.Effects
 
         public static BlendMethod GetBlendFunction(SKBlendMode blendMode)
         {
-            switch (blendMode)
+            return blendMode switch
             {
-                case SKBlendMode.Clear:
-                    return ClearBlend;
-                case SKBlendMode.Src:
-                    return SrcBlend;
-                case SKBlendMode.Dst:
-                    return DstBlend;
-                case SKBlendMode.SrcOver:
-                    return SrcOverBlend;
-                case SKBlendMode.DstOver:
-                    return DstOverBlend;
+                SKBlendMode.Clear => ClearBlend,
+                SKBlendMode.Src => SrcBlend,
+                SKBlendMode.Dst => DstBlend,
+                SKBlendMode.SrcOver => SrcOverBlend,
+                SKBlendMode.DstOver => DstOverBlend,
                 //case SKBlendMode.SrcIn:
                 //    break;
                 //case SKBlendMode.DstIn:
@@ -197,19 +192,9 @@ namespace TextCaptchaGenerator.Effects
                 //    break;
                 //case SKBlendMode.Exclusion:
                 //    break;
-                case SKBlendMode.Multiply:
-                    return MultiplyBlend;
-                //case SKBlendMode.Hue:
-                //    break;
-                //case SKBlendMode.Saturation:
-                //    break;
-                //case SKBlendMode.Color:
-                //    break;
-                //case SKBlendMode.Luminosity:
-                //    break;
-                default:
-                    return ClearBlend;
-            }
+                SKBlendMode.Multiply => MultiplyBlend,
+                _ => ClearBlend
+            };
         }
 
         // Help methods
@@ -321,19 +306,13 @@ namespace TextCaptchaGenerator.Effects
         private static uint SrcOverBlend(uint src, uint dst)
         {
             byte srcA = (byte)(src >> 24 & 0xff);
-            if (srcA == 255)
-                return src;
-
-            return BlendPreMul(dst, src);
+            return srcA == 255 ? src : BlendPreMul(dst, src);
         }
 
         private static uint DstOverBlend(uint src, uint dst)
         {
             byte dstA = (byte) (dst >> 24 & 0xff);
-            if (dstA == 255)
-                return dst;
-
-            return BlendPreMul(src, dst);
+            return dstA == 255 ? dst : BlendPreMul(src, dst);
         }
 
 
