@@ -3,8 +3,8 @@
 	✔ rnd text @done(22-01-03 12:42)
 
 Drawable objects:
-	☐ curve line
-	☐ pattern
+	✔ curve line @done(22-01-09 19:51)
+	☐ pattern SKPath.ParseSvgPathData
 	☐ background text 
 
 Effects:

@@ -109,7 +109,17 @@ namespace TextCaptchaGenerator
                     Style = SKPaintStyle.Stroke
                     }
                 );
-            layer3.Drawables.Add(dCurveLine);
+            DSVGPathPattern dSVGPathPattern = new DSVGPathPattern(
+                new SKRect(0,0,300,250),
+                DSVGPathPattern.square,
+                new SKPaint(){
+                    Color = SKColors.Black,
+                    IsAntialias = true
+                }
+            );
+            layer3.Drawables.AddRange(new List<BaseDrawable>(){
+                dCurveLine, dSVGPathPattern
+            });
             image.Layers.Add(layer3);
 
             // RNDManager mgr = new RNDManager(0);
