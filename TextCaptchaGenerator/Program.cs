@@ -111,7 +111,7 @@ namespace TextCaptchaGenerator
                 );
             DSVGPathPattern dSVGPathPattern = new DSVGPathPattern(
                 new SKRect(0,0,300,250),
-                DSVGPathPattern.square,
+                DSVGPathPattern.triangle,
                 new SKPaint(){
                     Color = SKColors.Black,
                     IsAntialias = true

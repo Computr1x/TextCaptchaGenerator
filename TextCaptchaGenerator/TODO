@@ -4,7 +4,7 @@
 
 Drawable objects:
 	✔ curve line @done(22-01-09 19:51)
-	☐ pattern SKPath.ParseSvgPathData
+	✔ pattern SKPath.ParseSvgPathData @done(22-01-15 20:21)
 	☐ background text 
 
 Effects:

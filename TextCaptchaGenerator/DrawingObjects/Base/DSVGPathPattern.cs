@@ -25,8 +25,9 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
 
         public override void Draw(SKCanvas canvas)
         {
+            // SKPathEffect pathEffect = SKPathEffect.Create1DPath(SKPath.ParseSvgPathData(SVGPath), 50f, 10, SKPath1DPathEffectStyle.Translate);
             SKPathEffect pathEffect =
-                SKPathEffect.Create2DPath(SKMatrix.MakeScale(5f,5f), 
+                SKPathEffect.Create2DPath(SKMatrix.CreateScale(25f,25f), 
                     SKPath.ParseSvgPathData(SVGPath)); 
             // TODO
             // https://docs.microsoft.com/en-us/xamarin/xamarin-forms/user-interface/graphics/skiasharp/curves/effects
@@ -36,8 +37,9 @@ namespace TextCaptchaGenerator.DrawingObjects.Base
                 Paint.PathEffect = pathEffect;
 
                 canvas.Save();
-                canvas.ClipPath(path);
-                canvas.DrawRect(DrawingArea, Paint);
+                // canvas.ClipPath(path);
+                // canvas.DrawRect(DrawingArea, Paint);
+                canvas.DrawPath(path, Paint);
                 canvas.Restore();
 
                 // canvas.DrawPath(path, Paint);
