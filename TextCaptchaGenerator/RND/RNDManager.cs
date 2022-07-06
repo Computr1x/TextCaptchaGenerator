@@ -64,7 +64,7 @@ namespace TextCaptchaGenerator.RND{
         }
         
 
-        public SKPoint NextSkPoint(RNDRectangle rect){
+        public SKPoint NextSKPoint(RNDRectangle rect){
             return new SKPoint(
                 NextFloat(new RNDBasicRange<float>(rect.Left, rect.Right)),
                 NextFloat(new RNDBasicRange<float>(rect.Top, rect.Bottom)));

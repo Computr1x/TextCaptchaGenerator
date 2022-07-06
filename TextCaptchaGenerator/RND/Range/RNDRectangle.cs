@@ -20,5 +20,7 @@ namespace TextCaptchaGenerator.RND.Range{
             new(rect.Left, rect.Top, rect.Right, rect.Bottom);
         public static explicit operator RNDRectangle(SKRectI rect) => 
             new(rect.Left, rect.Top, rect.Right, rect.Bottom);
+        public static explicit operator RNDRectangle(SKImageInfo rect) => 
+            new(0, 0, rect.Size.Width, rect.Size.Height);
     }
 }

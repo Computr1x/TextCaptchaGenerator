@@ -5,9 +5,8 @@
     "version": "0.2.0",
     "console": "integratedTerminal",
     "configurations": [
-        
         {
-            "name": ".NET Core Launch (console)",
+            "name": "Launch",
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
@@ -15,7 +14,14 @@
             "args": [],
             "cwd": "${workspaceFolder}",
             "stopAtEntry": false,
-            "console": "internalConsole"
+            "console": "internalConsole",
+            // "pipeTransport": {
+            //     "pipeCwd": "${workspaceFolder}",
+            //     "pipeProgram": "bash",
+            //     "pipeArgs": ["-c"],
+            //     "debuggerPath": "/home/computrix/Programs/netcoredbg/netcoredbg",
+            //     "quoteArgs": true
+            // }
         }
     ]
 }

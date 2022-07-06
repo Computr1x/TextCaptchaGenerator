@@ -32,13 +32,15 @@ namespace TextCaptchaGenerator.Effects.Transform
                 float x = 0, y = 0;
 
                 int newWidth = (int)MathF.Round(width * sx), newHeight = (int)MathF.Round(height * sy);
-
+                // Console.WriteLine($"{width};{height};{newWidth};{newHeight}");
                 for (int j = 0; j < newHeight; j++)
                 {
                     y = (int)(j / sy);
                     for (int i = 0; i < newWidth; i++)
                     {
                         x = (int)(i / sx);
+
+                        // Console.WriteLine($"{x},{y},{i},{j}");
 
                         if (i >= 0 && i < width && j >= 0 && j < height)
                             Utils.SetColorCheckSrc(pSrc, ref width, ref height, ref x, ref y,

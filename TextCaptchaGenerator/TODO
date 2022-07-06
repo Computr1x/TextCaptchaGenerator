@@ -1,5 +1,5 @@
 ﻿Random:
-	☐ generate rnd value by seed
+	✔ generate rnd value by seed @done(22-04-04 16:27)
 	✔ rnd text @done(22-01-03 12:42)
 
 Drawable objects:
@@ -23,6 +23,18 @@ Layers:
 	✔ opacity @done(22-01-03 12:42)
 
 FIX:
+	☐ wave / skew / scale System.AccessViolationException
 	☐ dithering
 	☐ edge detection
 	✔ font problems @done(22-01-04 09:48)
+
+	Fatal error. System.AccessViolationException: Attempted to read or write protected memory. This is often an indication that other memory is corrupt.
+	at TextCaptchaGenerator.Effects.Utils.SetColorCheckSrc(UInt32*, Int32 ByRef, Int32 ByRef, Single ByRef, Single ByRef, UInt32[,] ByRef, Int32 ByRef, Int32 ByRef)
+	at TextCaptchaGenerator.Effects.Transform.Scale.Draw(SkiaSharp.SKBitmap)
+	at TextCaptchaGenerator.Hierarchy.Layer.DrawAll()
+	at TextCaptchaGenerator.Hierarchy.Image.DrawAll()
+	at TextCaptchaGenerator.Program.Test(System.String)
+	at TextCaptchaGenerator.Program.Main(System.String[])
+
+	bitmap.GetPixels()
+	error: 0x80004005

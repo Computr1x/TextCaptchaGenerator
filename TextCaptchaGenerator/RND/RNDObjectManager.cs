@@ -56,7 +56,15 @@ namespace TextCaptchaGenerator.RND{
         public RNDObjectManager(RNDRectangle rect, RNDManager manager, 
             RNDEnumRange<eDrawableType> allowedObjects = null)
         {
-            this.allowedObjects = allowedObjects ?? new();
+            this.allowedObjects = 
+                allowedObjects ?? 
+                new RNDEnumRange<eDrawableType>(
+                    new List<eDrawableType>(){
+                        eDrawableType.Ellipse, eDrawableType.Line,
+                        eDrawableType.Polygon, eDrawableType.Rectangle,
+                        eDrawableType.Text
+                    }
+                );
             mgr = manager;
             this.rect = rect;
         }
@@ -91,7 +99,7 @@ namespace TextCaptchaGenerator.RND{
                 new RNDColorRange(255));
 
             DEllipse ellipse = new(
-                mgr.NextSkPoint(EllipsePars.DrawingArea), 
+                mgr.NextSKPoint(EllipsePars.DrawingArea), 
                 mgr.NextSKSize(EllipsePars.SizeRange), 
                 mgr.NextSKPaint(EllipsePars.ColorRange));
             return ellipse;
@@ -104,8 +112,8 @@ namespace TextCaptchaGenerator.RND{
                 new RNDColorRange(25));
 
             DLine line = new DLine(
-                mgr.NextSkPoint(LinePars.DrawingArea),
-                mgr.NextSkPoint(LinePars.DrawingArea),
+                mgr.NextSKPoint(LinePars.DrawingArea),
+                mgr.NextSKPoint(LinePars.DrawingArea),
                 mgr.NextSKPaint(LinePars.ColorRange, true, mgr.NextInt(LinePars.StrokeWidthRange))
             );
 
@@ -144,7 +152,7 @@ namespace TextCaptchaGenerator.RND{
             int pointsCount = mgr.NextInt(PolygonPars.PointsCountRange);
             SKPoint[] points = new SKPoint[pointsCount];
             for(int i = 0; i < pointsCount; i++)
-                points[i] = mgr.NextSkPoint(rect);
+                points[i] = mgr.NextSKPoint(rect);
 
             DPolygon polygon = new DPolygon(
                 points, 
@@ -181,7 +189,7 @@ namespace TextCaptchaGenerator.RND{
                 point = new SKPoint(rect.Right / 2f - textLength / 2f, rect.Bottom / 2f);
             }
             else{
-                point = mgr.NextSkPoint(TextPars.DrawingArea);
+                point = mgr.NextSKPoint(TextPars.DrawingArea);
             }
 
             DText dtext = new DText(

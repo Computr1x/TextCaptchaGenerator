@@ -33,7 +33,6 @@ namespace TextCaptchaGenerator.Effects.Color
                                           0.114f * (curColor & 0xff));
 
                         buffer[y, x] = Utils.MakePixel(curAlpha, resColor, resColor, resColor);
-
                     }
                 }
 

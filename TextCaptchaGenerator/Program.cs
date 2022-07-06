@@ -5,6 +5,14 @@ using System.Collections.Generic;
 using TextCaptchaGenerator.DrawingObjects.Base;
 using TextCaptchaGenerator.DrawingObjects;
 using TextCaptchaGenerator.Hierarchy;
+using TextCaptchaGenerator.RND;
+using TextCaptchaGenerator.RND.Range;
+using TextCaptchaGenerator.RND.Layers;
+using TextCaptchaGenerator.Effects.Glitch;
+using TextCaptchaGenerator.Effects.Distort;
+using TextCaptchaGenerator.Effects.Color;
+using TextCaptchaGenerator.Effects.Noise;
+using TextCaptchaGenerator.Effects.Transform;
 
 namespace TextCaptchaGenerator
 {
@@ -24,17 +32,6 @@ namespace TextCaptchaGenerator
 
         static void Main(string[] args)
         {
-            // uint c1 = Utils.MakePixel(255, 100, 0, 0);
-            // uint c2 = Utils.MakePixel(255, 255, 255, 255);
-
-            // var a = Utils.CalcAlphaByte(85, 85);
-            // var b = Utils.CalcAlphaByte(150, 150);
-
-            // uint res = Utils.BlendPreMul(c1, c2);
-            //uint res1 = Utils.BlendTest(res, Utils.MakePixel(255, 255, 255, 255));
-            
-            // TestBlending();
-
             Test($"test1.png");
             Console.WriteLine("Done");
         }
@@ -43,27 +40,42 @@ namespace TextCaptchaGenerator
         {
             Image image = new Image(512, 256);
 
+            RNDManager mgr = new RNDManager(0);
+            RNDObjectManager objMgr = new((RNDRectangle)image.info, mgr);
+            RNDEffectManager effMgr = new((RNDRectangle)image.info, mgr);
+
             // layer1 
             Layer layer1 = new Layer(image.info, SKColors.White);
-            DEllipse dEllipse = new DEllipse(
-                new SKPoint(15, 15), 40, 
-                new SKPaint() { Color = new SKColor(0xff4285F4), IsAntialias = true });
-            DText dText = new DText(new SKPoint(128, 128), 
-                "Igor kek",
-                new SKPaint()
-                {
-                    Color = new SKColor(0xff4285F4),
-                    IsAntialias = true,
-                    Style = SKPaintStyle.Fill,
-                    StrokeWidth = 4
-                });
-
-            layer1.Drawables.Add(dEllipse);
-            layer1.Drawables.Add(dText);
-            // layer1.Drawables.Add(dImage);   
-
+            layer1.Drawables.AddRange(objMgr.GetRandomDrawable(5));
+            layer1.Effects.AddRange(effMgr.GetRandomEffects(3));
             image.Layers.Add(layer1);
 
+
+            Layer layer2 = new Layer(image.info);
+            layer2.Drawables.Add(
+                objMgr.GetRandomText()
+            );
+            layer2.Effects.AddRange(effMgr.GetRandomEffects(2));
+            image.Layers.Add(layer2);
+            
+            Layer layer3 = new Layer(image.info, SKColors.White, 40);
+            layer3.Drawables.AddRange(objMgr.GetRandomDrawable(8));
+            layer3.Effects.AddRange(effMgr.GetRandomEffects(3));
+            // var scaleEff = new Scale(0.8f, 1.8f);
+            // layer3.Effects.Add(scaleEff);
+            image.Layers.Add(layer3);
+
+
+            // image to png
+            using var res = image.DrawAll();
+            using var data = res.Encode(SKEncodedImageFormat.Png, 100);
+            using var stream = File.OpenWrite(Path.Combine(DataPath, name));
+            data.SaveTo(stream);
+        }
+
+
+
+/*
             // layer2
             Layer layer2 = new Layer(image.info, SKColors.Transparent, 200);
             // objects
@@ -92,39 +104,67 @@ namespace TextCaptchaGenerator
                             StrokeWidth = 3,
                             Style = SKPaintStyle.StrokeAndFill
                         });
-            DImage dImage = new DImage(200, 50, Path.Combine(DataPath, "img.png"));
+            DImage dImage = new DImage(200, 150, Path.Combine(DataPath, "img.png"));
 
-            layer2.Drawables.AddRange(new List<BaseDrawable>(){
-                dRect, dLine, dLine2, dLine3, dLine4, dPolygon, dImage
-            });
-            image.Layers.Add(layer2);
-
-            Layer layer3 = new Layer(image.info, SKColors.Transparent);
-            DCurveLine dCurveLine = new DCurveLine(
-                new SKPoint[] { new(20,20), new(40,40), new(180, 100), new(200, 150), new(250,250)},
-                new SKPaint() { 
-                    Color = SKColors.MistyRose,
-                    StrokeWidth = 6,
+            DText dText = new DText(new SKPoint(200, 128), 
+                "Igor kek",
+                new SKPaint()
+                {
+                    Color = new SKColor(0xff4285F4),
                     IsAntialias = true,
-                    Style = SKPaintStyle.Stroke
-                    }
-                );
-            DSVGPathPattern dSVGPathPattern = new DSVGPathPattern(
-                new SKRect(0,0,300,250),
-                DSVGPathPattern.triangle,
-                new SKPaint(){
-                    Color = SKColors.Black,
-                    IsAntialias = true
-                }
-            );
-            layer3.Drawables.AddRange(new List<BaseDrawable>(){
-                dCurveLine, dSVGPathPattern
-            });
-            image.Layers.Add(layer3);
+                    Style = SKPaintStyle.Fill,
+                    StrokeWidth = 4,
+                    TextSize = 40
+                });
+            layer2.Drawables.Add(dText);
 
-            // RNDManager mgr = new RNDManager(0);
-            // Layer layer3 = new RNDObjectsLayer(image.info, mgr, null, 200, 5);
+            
+
+            
+            Layer layer3 = new RNDObjectsLayer(image.info, mgr, null, 100, 5);
+            image.Layers.Add(layer3);
+            layer3.Effects.AddRange(effMgr.GetRandomEffects(3));
+
+            Layer layer4 = new Layer(image.info);
+            layer4.Drawables.Add(
+                objMgr.GetRandomText()
+            );
+            // RGBShift effect = new RGBShift(3);
+            // layer4.Effects.Add(effect);
+            layer4.Effects.AddRange(effMgr.GetRandomEffects(3));
+            image.Layers.Add(layer4);
+
+            // layer2.Drawables.AddRange(new List<BaseDrawable>(){
+            //     dRect, dLine, dLine2, dLine3, dLine4, dPolygon, dImage
+            // });
+            // image.Layers.Add(layer2);
+
+            // Layer layer3 = new Layer(image.info, SKColors.Transparent);
+            // DCurveLine dCurveLine = new DCurveLine(
+            //     new SKPoint[] { new(20,20), new(40,40), new(180, 100), new(200, 150), new(250,250)},
+            //     new SKPaint() { 
+            //         Color = SKColors.MistyRose,
+            //         StrokeWidth = 6,
+            //         IsAntialias = true,
+            //         Style = SKPaintStyle.Stroke
+            //         }
+            //     );
+            // DSVGPathPattern dSVGPathPattern = new DSVGPathPattern(
+            //     new SKRect(0,0,300,250),
+            //     DSVGPathPattern.triangle,
+            //     new SKPaint(){
+            //         Color = SKColors.Black,
+            //         IsAntialias = true
+            //     }
+            // );
+            // layer3.Drawables.AddRange(new List<BaseDrawable>(){
+            //     dCurveLine, dSVGPathPattern
+            // });
             // image.Layers.Add(layer3);
+
+
+            
+
 
             // distort
             //Swirl effect = new Swirl(150, 2, 30, 30) { Antialiasing = true };
@@ -148,7 +188,7 @@ namespace TextCaptchaGenerator
 
             // glitch
             // RGBShift effect = new RGBShift(3);
-            //Pixelate effect = new Pixelate(10, 4);
+            // Pixelate effect = new Pixelate(10, 4);
             // Slices effect2 = new Slices() { Count = 10, SliceHeight = 10 };
             // Crystallize effect = new Crystallize() { CrystalsCount = 512 };
             // layer2.Effects.Add(effect);
@@ -179,14 +219,6 @@ namespace TextCaptchaGenerator
             //layer2.Effects.Add(effect2);
 
 
-            // image to png
-            using var res = image.DrawAll();
-            using var data = res.Encode(SKEncodedImageFormat.Png, 100);
-            using var stream = File.OpenWrite(Path.Combine(DataPath, name));
-            data.SaveTo(stream);
-        }
-
-/*
         private static void TestBlending()
         {
             foreach (SKBlendMode blendMode in Enum.GetValues(typeof(SKBlendMode)))
